@@ -3,7 +3,7 @@
 
 ```st
 Metacello new
-	repository: '';
+	repository: 'github://feenkcom/gt4css:main/src';
 	baseline: 'Gt4CSS';
 	load
 ```
