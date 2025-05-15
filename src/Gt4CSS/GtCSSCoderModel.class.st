@@ -31,6 +31,51 @@ GtCSSCoderModel >> forMethod: aCompiledMethod [
 	self sourceCode: (GtCoderExplicitStringSource new source: source)
 ]
 
+{ #category : #ui }
+GtCSSCoderModel >> gtLiveFor: aView [
+	<gtView>
+	^ aView forward
+		title: 'Live' translated;
+		priority: 10;
+		object: [ self ];
+		view: #gtLiveFor:context:
+]
+
+{ #category : #views }
+GtCSSCoderModel >> gtLiveFor: aView context: aContext [
+	<gtView>
+	| lspModel |
+	lspModel := aContext at: #cssLSPModel ifAbsentPut: [ GtLSPCSSModel local ].
+	^ aView explicit
+		title: 'Live';
+		priority: 5;
+		stencil: [ self asElement
+				vFitContentLimited;
+				lspModel: lspModel;
+				yourself ]
+]
+
+{ #category : #accessing }
+GtCSSCoderModel >> highlighter [
+	^ self attributeNamed: #highlighter
+]
+
+{ #category : #accessing }
+GtCSSCoderModel >> highlighter: aHighlighter [
+	self highlighter == aHighlighter ifTrue: [ ^ self ].
+
+	self attributeNamed: #highlighter put: aHighlighter.
+
+	self requestUpdateAddOns
+]
+
+{ #category : #'add-ons' }
+GtCSSCoderModel >> highlighterFor: anAST into: coderAddOns [
+	<gtAstCoderAddOns: 10>
+	self highlighter
+		ifNotNil: [ :aHighlighter | coderAddOns addStyler: aHighlighter ]
+]
+
 { #category : #initialization }
 GtCSSCoderModel >> initializeAddOns: addOns [
 	super initializeAddOns: addOns.
@@ -39,7 +84,7 @@ GtCSSCoderModel >> initializeAddOns: addOns [
 		addStyler: (GtCoderAstSmaCCParserStyler new smaccStyler: CSSParser gtStyler)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewModel [
 	super initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewModel.
 
@@ -50,7 +95,7 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 		id: GtMethodCoderSaveActionId
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GtCSSCoderModel >> initializeShortcuts: addOns [
 	super initializeShortcuts: addOns.
 
@@ -67,7 +112,7 @@ GtCSSCoderModel >> methodBehavior: anObject [
 	methodBehavior := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 GtCSSCoderModel >> methodSource [
 	^ String
 		streamContents: [ :stream | 
@@ -81,7 +126,7 @@ GtCSSCoderModel >> methodSource [
 				<< '''' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'add-ons' }
 GtCSSCoderModel >> modifiedMessageAstFor: anAST into: coderAddOns [
 	<gtAstCoderAddOns: 2>
 
@@ -105,7 +150,7 @@ GtCSSCoderModel >> primitiveEvaluate: aSourceString inContext: aGtSourceCoderEva
 	"Nothing to evaluate"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSCoderModel >> save [
 	self methodBehavior
 		realBehaviorDo: [ :cls | 

@@ -18,7 +18,7 @@ GtCSSExpandableSourceCoderElement >> lspModel: anObject [
 	expandedElement ifNotNil: [ expandedElement lspModel: lspModel ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - instance creation' }
 GtCSSExpandableSourceCoderElement >> newCollapsedElement [
 	| aCollapsedElement |
 	aCollapsedElement := GtCSSCoderCollapsedContentElement new.
@@ -27,7 +27,7 @@ GtCSSExpandableSourceCoderElement >> newCollapsedElement [
 	^ aCollapsedElement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - instance creation' }
 GtCSSExpandableSourceCoderElement >> newExpandedElement [
 	| anExpandedElement |
 	anExpandedElement := GtCSSSourceCoderExpandedContentElement new.
@@ -37,7 +37,7 @@ GtCSSExpandableSourceCoderElement >> newExpandedElement [
 	^ anExpandedElement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - update' }
 GtCSSExpandableSourceCoderElement >> updateElement [
 	super updateElement.
 	textualCoderViewModel expanded

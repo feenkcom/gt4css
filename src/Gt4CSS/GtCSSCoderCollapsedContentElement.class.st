@@ -4,7 +4,7 @@ Class {
 	#category : #'Gt4CSS-UI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GtCSSCoderCollapsedContentElement >> initialize [
 	super initialize.
 	self removeChild: content

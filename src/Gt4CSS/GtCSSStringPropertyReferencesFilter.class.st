@@ -10,6 +10,18 @@ GtCSSStringPropertyReferencesFilter class >> forProperty: aString [
 ]
 
 { #category : #'as yet unclassified' }
+GtCSSStringPropertyReferencesFilter >> gtDisplayOn: stream [
+	stream
+		nextPutAll: string printString;
+		nextPutAll: ' gtCSSStringPropertyReferences'
+]
+
+{ #category : #accessing }
+GtCSSStringPropertyReferencesFilter >> highlighter [
+	^ GtCSSStringPropertyHighlighter new name: string
+]
+
+{ #category : #testing }
 GtCSSStringPropertyReferencesFilter >> matchesAST: ast [
 	ast
 		withAllNodesOfType: CSSDeclarationNode

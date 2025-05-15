@@ -4,7 +4,7 @@ Class {
 	#category : #'Gt4CSS-UI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GtCSSSourceCoderEditorElement >> defaultTextEditorModel [
 	^ GtLSPEditorModel withEditorMode: self defaultTextEditorMode
 ]

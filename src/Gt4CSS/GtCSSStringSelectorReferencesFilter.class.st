@@ -9,6 +9,18 @@ GtCSSStringSelectorReferencesFilter class >> forSelector: aString [
 	^ self new string: aString
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSStringSelectorReferencesFilter >> gtDisplayOn: stream [
+	stream
+		nextPutAll: string printString;
+		nextPutAll: ' gtCSSStringSelectorReferences'
+]
+
+{ #category : #accessing }
+GtCSSStringSelectorReferencesFilter >> highlighter [
+	^ GtCSSStringSelectorHighlighter new name: string
+]
+
 { #category : #testing }
 GtCSSStringSelectorReferencesFilter >> matchesAST: ast [
 	ast

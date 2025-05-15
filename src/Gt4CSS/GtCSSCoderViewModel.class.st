@@ -4,17 +4,17 @@ Class {
 	#category : #'Gt4CSS-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - accessing' }
 GtCSSCoderViewModel >> elementClass [
 	^ GtCSSExpandableSourceCoderElement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - header' }
 GtCSSCoderViewModel >> headerElementClass [
 	^ GtCSSCoderHeaderElement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - actions' }
 GtCSSCoderViewModel >> save [
 	^ self coderModel save
 ]

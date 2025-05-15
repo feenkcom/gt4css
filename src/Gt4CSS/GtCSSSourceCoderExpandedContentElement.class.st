@@ -7,12 +7,12 @@ Class {
 	#category : #'Gt4CSS-UI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #updating }
 GtCSSSourceCoderExpandedContentElement >> editorChangedTo: aString [
 	self lspFile ifNotNil: [ :file | file source: aString ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSSourceCoderExpandedContentElement >> lspFile [
 	^ textualCoderViewModel
 		ifNotNil: [ lspModel
@@ -37,10 +37,11 @@ GtCSSSourceCoderExpandedContentElement >> lspModel [
 
 { #category : #accessing }
 GtCSSSourceCoderExpandedContentElement >> lspModel: anObject [
-	lspModel := anObject
+	lspModel := anObject.
+	editorElement ifNotNil: [ self updateAptitude: editorElement ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 GtCSSSourceCoderExpandedContentElement >> newEditorElement [
 	| editor |
 	editor := GtCSSSourceCoderEditorElement new.
@@ -55,7 +56,7 @@ GtCSSSourceCoderExpandedContentElement >> newEditorElement [
 	^ editor
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - textual coder view model' }
 GtCSSSourceCoderExpandedContentElement >> onPostTextualCoderViewModelChanged [
 	super onPostTextualCoderViewModelChanged.
 	self updateAptitude: editorElement

@@ -9,7 +9,7 @@ Class {
 	#category : #'Gt4CSS-UI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 GtCSSCoderHeaderElement >> initialize [
 	super initialize.
 	self fitContent.

@@ -34,7 +34,7 @@ GtCSSStringReferencesFilter >> matchesAST: ast [
 
 { #category : #accessing }
 GtCSSStringReferencesFilter >> resultType [
-	^ GtAsyncSearchMethodGroupStream
+	^ GtAsyncCSSStringTypedGroupStream
 ]
 
 { #category : #accessing }
