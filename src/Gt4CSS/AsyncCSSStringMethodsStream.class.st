@@ -8,6 +8,7 @@ Class {
 AsyncCSSStringMethodsStream >> initialize [
 	super initialize.
 
-	stream := (Pragma allNamed: 'cssString') asAsyncStream
-			collect: [ :each | each method ]
+	stream := ((Pragma allNamed: 'cssString') asAsyncStream
+			collect: [ :each | each method ])
+			select: [ :each | each gtIsActive and: [ each methodClass isObsolete not ] ]
 ]

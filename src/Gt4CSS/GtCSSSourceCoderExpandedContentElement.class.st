@@ -67,5 +67,7 @@ GtCSSSourceCoderExpandedContentElement >> updateAptitude: editor [
 	| aptitude |
 	aptitude := GtLSPEditorAptitude new.
 	aptitude lspFile: self lspFile.
-	editor aptitude: aptitude
+	editor aptitude: aptitude.
+	editor
+		addAptitude: (BrGlamorousWithExplicitContextMenuAptitude menu: [ editor createContextMenu ])
 ]

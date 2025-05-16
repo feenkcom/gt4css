@@ -8,6 +8,62 @@ Class {
 	#category : #'Gt4CSS-Model'
 }
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
+	<gtCoderContextMenuAddOns: 10>
+	| allSelections allCursors node interval |
+	allSelections := aCoderViewModel selection allSelections.
+	allCursors := aCoderViewModel cursors allCursors.
+	interval := allSelections size = 1
+			ifTrue: [ allSelections first ]
+			ifFalse: [ allCursors size = 1
+					ifTrue: [ allCursors first position to: allCursors first position ]
+					ifFalse: [ ^ self ] ].
+	node := anAst nodeForInterval: interval.
+
+	(node isKindOf: CSSDeclarationNode)
+		ifTrue: [ (node name startPosition <= interval first
+				and: [ node name stopPosition >= interval last ])
+				ifTrue: [ coderAddOns
+						addContextMenuItem: (self
+								createLabel: 'References to property'
+								description: node name source)
+						group: (BrMenuItemGroupConfiguration new
+								name: 'CSS';
+								priority: 10)
+						hover: nil
+						leave: nil
+						action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringPropertyReferences ] ].
+			^ self ].
+
+	((node isKindOf: CSSIdentifierNode)
+		and: [ (node parent isKindOf: CSSRulesetNode)
+				and: [ (node parent selectorParts identityIncludes: node)
+						and: [ node startPosition <= interval first
+								and: [ node stopPosition >= interval last ] ] ] ])
+		ifTrue: [ coderAddOns
+				addContextMenuItem: (self
+						createLabel: 'References in methods'
+						description: node source)
+				group: (BrMenuItemGroupConfiguration new
+						name: 'CSS';
+						priority: 10)
+				hover: nil
+				leave: nil
+				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSClassMethodReferences ].
+			coderAddOns
+				addContextMenuItem: (self
+						createLabel: 'References in css'
+						description: node source)
+				group: (BrMenuItemGroupConfiguration new
+						name: 'CSS';
+						priority: 10)
+				hover: nil
+				leave: nil
+				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringSelectorReferences ].
+			^ self ]
+]
+
 { #category : #converting }
 GtCSSCoderModel >> asCoderViewModel [
 	^ GtCSSCoderViewModel new coder: self
