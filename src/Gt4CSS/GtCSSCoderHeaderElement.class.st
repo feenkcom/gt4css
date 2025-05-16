@@ -43,6 +43,7 @@ GtCSSCoderHeaderElement >> package [
 
 { #category : #accessing }
 GtCSSCoderHeaderElement >> showPackageAndClass: aBoolean [
+	self childNamed: #breadcrumbs ifFound: [ :each | self removeChild: each ].
 	aBoolean
 		ifTrue: [ | breadcrumbs |
 			breadcrumbs := BrHorizontalPane new fitContent.
@@ -84,9 +85,6 @@ GtCSSCoderHeaderElement >> showPackageAndClass: aBoolean [
 				addChild: breadcrumbs
 				at: 1
 				as: #breadcrumbs ]
-		ifFalse: [ self
-				childNamed: #breadcrumbs
-				ifFound: [ :each | self removeChild: each ] ]
 ]
 
 { #category : #'as yet unclassified' }
