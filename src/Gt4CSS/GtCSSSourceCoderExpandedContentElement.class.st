@@ -63,6 +63,11 @@ GtCSSSourceCoderExpandedContentElement >> onPostTextualCoderViewModelChanged [
 ]
 
 { #category : #'as yet unclassified' }
+GtCSSSourceCoderExpandedContentElement >> showPackageAndClass: aBoolean [
+	header ifNotNil: [ header showPackageAndClass: aBoolean ]
+]
+
+{ #category : #'as yet unclassified' }
 GtCSSSourceCoderExpandedContentElement >> updateAptitude: editor [
 	| aptitude |
 	aptitude := GtLSPEditorAptitude new.

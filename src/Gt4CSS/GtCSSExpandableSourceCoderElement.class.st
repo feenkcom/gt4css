@@ -2,10 +2,17 @@ Class {
 	#name : #GtCSSExpandableSourceCoderElement,
 	#superclass : #GtExpandableSourceCoderElement,
 	#instVars : [
-		'lspModel'
+		'lspModel',
+		'showPackageAndClass'
 	],
 	#category : #'Gt4CSS-UI'
 }
+
+{ #category : #'as yet unclassified' }
+GtCSSExpandableSourceCoderElement >> initialize [
+	super initialize.
+	showPackageAndClass := false
+]
 
 { #category : #accessing }
 GtCSSExpandableSourceCoderElement >> lspModel [
@@ -24,6 +31,7 @@ GtCSSExpandableSourceCoderElement >> newCollapsedElement [
 	aCollapsedElement := GtCSSCoderCollapsedContentElement new.
 	textualCoderViewModel
 		ifNotNil: [ :aCoder | self assignCollapsedCoder: aCoder to: aCollapsedElement ].
+	aCollapsedElement showPackageAndClass: showPackageAndClass.
 	^ aCollapsedElement
 ]
 
@@ -34,7 +42,19 @@ GtCSSExpandableSourceCoderElement >> newExpandedElement [
 	anExpandedElement lspModel: lspModel.
 	textualCoderViewModel
 		ifNotNil: [ :aCoder | self assignExpandedCoder: aCoder to: anExpandedElement ].
+	anExpandedElement showPackageAndClass: showPackageAndClass.
 	^ anExpandedElement
+]
+
+{ #category : #accessing }
+GtCSSExpandableSourceCoderElement >> showPackageAndClass [
+	^ showPackageAndClass
+]
+
+{ #category : #accessing }
+GtCSSExpandableSourceCoderElement >> showPackageAndClass: anObject [
+	showPackageAndClass := anObject.
+	self updateHeaders
 ]
 
 { #category : #'private - update' }
@@ -42,4 +62,12 @@ GtCSSExpandableSourceCoderElement >> updateElement [
 	super updateElement.
 	textualCoderViewModel expanded
 		ifTrue: [ expandedElement ifNotNil: [ expandedElement lspModel: lspModel ] ]
+]
+
+{ #category : #accessing }
+GtCSSExpandableSourceCoderElement >> updateHeaders [
+	expandedElement
+		ifNotNil: [ expandedElement showPackageAndClass: showPackageAndClass ].
+	collapsedElement
+		ifNotNil: [ collapsedElement showPackageAndClass: showPackageAndClass ]
 ]

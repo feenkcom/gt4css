@@ -29,12 +29,16 @@ GtAsyncCSSStringTypedGroupStream >> gtItemsFor: aView context: aContext [
 							collect: [ :each | 
 								(GtCSSCoderModel new
 									forMethod: each method;
-									highlighter: self highlighter) asCoderViewModel expanded: false ]);
+									highlighter: self highlighter;
+									yourself) asCoderViewModel expanded: false ]);
 					itemType: [ :factory :each | each elementClass ];
 					itemStencil: [ :class | 
 						class new
 							vFitContentLimited;
 							lspModel: lspModel;
 							yourself ];
-					itemDataBinder: [ :eachCoderElement :eachCoderViewModel | eachCoderElement coderViewModel: eachCoderViewModel ] ]
+					itemDataBinder: [ :eachCoderElement :eachCoderViewModel | 
+						eachCoderElement
+							coderViewModel: eachCoderViewModel;
+							showPackageAndClass: true ] ]
 ]

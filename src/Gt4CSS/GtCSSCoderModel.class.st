@@ -69,6 +69,16 @@ GtCSSCoderModel >> asCoderViewModel [
 	^ GtCSSCoderViewModel new coder: self
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> behavior [
+	^ self methodBehavior behavior
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> compiledMethod [
+	^ self behavior >> self selector
+]
+
 { #category : #'api - ast' }
 GtCSSCoderModel >> computeAst: aString [
 	^ CSSParser parseWithErrors: aString
@@ -194,6 +204,11 @@ GtCSSCoderModel >> modifiedMessageAstFor: anAST into: coderAddOns [
 		icon: BrGlamorousVectorIcons cancel
 		action: [ :aCoderUIModel :anElement | aCoderUIModel discardChanges ]
 		id: GtMethodCoderDiscardChangesActionId
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> package [
+	^ self compiledMethod package
 ]
 
 { #category : #'private - actions' }
