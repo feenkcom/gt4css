@@ -7,12 +7,14 @@ Class {
 { #category : #baseline }
 BaselineOfGt4CSS >> baseline: spec [
 	<baseline>
-	^ spec
-		for: #common
-		do: [ spec
-				baseline: 'GToolkit4LSP'
-					with: [ spec repository: 'github://feenkcom/gt4lsp:main/src' ];
-				baseline: 'GToolkitCoder'
-					with: [ spec repository: 'github://feenkcom/gtoolkit-coder:main/src' ];
-				package: 'Gt4CSS' ]
+	spec for: #'common' do: [
+		spec
+			baseline: 'GToolkit4LSP' with: [
+				spec repository: 'github://feenkcom/gt4lsp:v0.6.721/src' ].
+		spec
+			baseline: 'GToolkitCoder' with: [
+				spec repository: 'github://feenkcom/gtoolkit-coder:v0.8.2094/src' ].
+
+		spec package: 'Gt4CSS'.
+	]
 ]
