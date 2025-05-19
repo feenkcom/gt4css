@@ -33,7 +33,8 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 								priority: 10)
 						hover: nil
 						leave: nil
-						action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringPropertyReferences ] ].
+						action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringPropertyReferences ]
+						id: #'context-menu--css-property-reference' ].
 			^ self ].
 
 	((node isKindOf: CSSIdentifierNode)
@@ -50,7 +51,8 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 						priority: 10)
 				hover: nil
 				leave: nil
-				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSClassMethodReferences ].
+				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSClassMethodReferences ]
+				id: #'context-menu--css-method-reference'.
 			coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'References in css'
@@ -60,7 +62,8 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 						priority: 10)
 				hover: nil
 				leave: nil
-				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringSelectorReferences ].
+				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringSelectorReferences ]
+				id: #'context-menu--css-string-reference'.
 			^ self ]
 ]
 
@@ -158,7 +161,8 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 		addMainAction: 'Save' translated
 		icon: BrGlamorousVectorIcons accept
 		action: [ :aCoderUIModel :anElement | aCoderUIModel save ]
-		id: GtMethodCoderSaveActionId
+		id: GtMethodCoderSaveActionId.
+	self initializeSearchTextAddOns: addOns viewModel: aGtPharoMethodCoderViewModel
 ]
 
 { #category : #initialization }
