@@ -5,6 +5,75 @@ Class {
 }
 
 { #category : #examples }
+GtCSSFileSamples >> cssDefinitionFromCSSString [
+	<gtExample>
+	| scripter source method index |
+	method := self class >> #lepiter_common.
+	source := self lepiter_common.
+	scripter := BlScripter new.
+	scripter
+		substep: 'Show a coder'
+		do: [ :aStep | 
+			aStep set
+				label: 'Initialize Coder Model';
+				model: [ GtCSSCoderModel new forMethod: method ];
+				play.
+			aStep set
+				label: 'Initialize Coder UI';
+				element: [ :aCoder | aCoder asElement matchParent ];
+				onModel;
+				play ].
+	scripter
+		doStep: [ :s1 | 
+			s1
+				label: 'Set space extent';
+				block: [ :aSpace | aSpace extent: 600 @ 800 ];
+				onSpace ].
+	index := (source indexOfSubCollection: 'le-nav-link') + 1.
+	scripter
+		doStep: [ :s | 
+			s
+				label: 'Scroll to position';
+				// GtSourceCoderEditorId;
+				action: [ :aSourceEditor | 
+					aSourceEditor
+						scrollToPosition: (source lineNumberCorrespondingToIndex: index) + 5 ] ].
+	scripter
+		doStep: [ :s | 
+			s
+				label: 'Select part of the selector';
+				// GtSourceCoderEditorId;
+				action: [ :aSourceEditor | 
+					aSourceEditor selecter
+						from: index to: index + 1;
+						select ] ].
+	scripter
+		secondaryClickStep: [ :s | 
+			s
+				label: 'Open context menu';
+				id: GtSourceCoderEditorId ].
+	scripter
+		substeps: 'Click on css menu item'
+		do: [ :aStep | 
+			aStep
+				clickStep: [ :s | 
+					s
+						onSpaceRoot;
+						id: #'context-menu--css-method-reference' ].
+			aStep
+				assertStep: [ :s | 
+					s
+						label: 'Assert Spawn Object Event';
+						satisfies: [ :theScripter | 
+							theScripter events reversed
+								detectEventOfClass: GtPhlowObjectToSpawn
+								ifFound: [ :event | true ]
+								ifNone: [ false ] ];
+						onScripter ] ].
+	^ scripter
+]
+
+{ #category : #examples }
 GtCSSFileSamples >> cssDefinitionFromMethod [
 	<gtExample>
 	| scripter source method index |
@@ -56,12 +125,70 @@ GtCSSFileSamples >> cssDefinitionFromMethod [
 								ifFound: [ :event | true ]
 								ifNone: [ false ] ];
 						onScripter ] ].
+	^ scripter
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> cssRenameDefinitionFromCSSString [
+	<gtExample>
+	| scripter |
+	scripter := self cssDefinitionFromCSSString.
+	self doRenameIn: scripter.
+	^ scripter
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> cssRenameDefinitionFromMethod [
+	<gtExample>
+	| scripter |
+	scripter := self cssDefinitionFromMethod.
+	self doRenameIn: scripter.
+	^ scripter
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> doRenameIn: scripter [
+	| newName |
+	newName := 'a12345'.
 	scripter
 		secondaryClickStep: [ :s | 
 			s
 				label: 'Open context menu';
 				id: GtSourceCoderEditorId ].
-	^ scripter
+	scripter
+		clickStep: [ :s | 
+			s
+				onSpaceRoot;
+				id: #'context-menu--css-rename-selector' ].
+	scripter check
+		id: GtSourceCoderEditorId;
+		exists;
+		onBreadthFirstChildOfClass: GtRenameEditor.
+	(scripter type: newName) play.
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Open preview';
+				// #previewCheckButton ].
+	scripter
+		doStep: [ :s | 
+			s
+				onSpaceRoot;
+				// GtChangesElement;
+				block: [ :each | 
+					| count |
+					count := 0.
+					each changes gtAllChanges
+						do: [ :change | 
+							(change changeClassName = self class name
+								and: [ #(writeOn: lepiter_common) includes: change selector ])
+								ifTrue: [ count := count + 1.
+									self
+										assert: change source
+										equals: ((self class sourceCodeAt: change selector)
+												copyReplaceAll: 'le-nav-link'
+												with: newName) ] ].
+					self assert: count equals: 2 ] ]
 ]
 
 { #category : #examples }
@@ -778,6 +905,29 @@ figcaption {
     End of LEGACY CODE
  */
 '
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> renameCSSSelector [
+	<gtExample>
+	| model refactoring newName oldName |
+	model := GtRBNamespace new.
+	newName := 'a12345a'.
+	oldName := 'le-nav-link'.
+	refactoring := GtCSSStringRenameSelectorRefactoring
+			model: model
+			rename: oldName
+			to: newName.
+	refactoring primitiveExecute.
+	#(writeOn: lepiter_common)
+		do: [ :sel | 
+			| oldSource newSource |
+			oldSource := self class sourceCodeAt: sel.
+			newSource := (model classFor: self class) sourceCodeFor: sel.
+			self
+				assert: newSource
+				equals: (oldSource copyReplaceAll: oldName with: newName) ].
+	^ model
 ]
 
 { #category : #'sample methods' }
