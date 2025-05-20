@@ -8,14 +8,14 @@ Class {
 	#category : #'Gt4CSS-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns: 10>
 	| allSelections allCursors node interval |
 	allSelections := aCoderViewModel selection allSelections.
 	allCursors := aCoderViewModel cursors allCursors.
 	interval := allSelections size = 1
-			ifTrue: [ allSelections first ]
+			ifTrue: [ allSelections first indices ]
 			ifFalse: [ allCursors size = 1
 					ifTrue: [ allCursors first position to: allCursors first position ]
 					ifFalse: [ ^ self ] ].
@@ -42,13 +42,27 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				and: [ (node parent selectorParts identityIncludes: node)
 						and: [ node startPosition <= interval first
 								and: [ node stopPosition >= interval last ] ] ] ])
-		ifTrue: [ coderAddOns
+		ifTrue: [ | group |
+			group := BrMenuItemGroupConfiguration new
+					name: 'CSS';
+					priority: 10.
+			coderAddOns
+				addContextMenuItem: (self
+						createLabel: 'Rename CSS class'
+						description: node source)
+				group: group
+				hover: nil
+				leave: nil
+				action: [ :cvm :element | 
+					(GtCSSStringRenameSelectorController new
+						sourceCoderViewModel: cvm;
+						originalNode: node) execute ]
+				id: #'context-menu--css-rename-selector'.
+			coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'References in methods'
 						description: node source)
-				group: (BrMenuItemGroupConfiguration new
-						name: 'CSS';
-						priority: 10)
+				group: group
 				hover: nil
 				leave: nil
 				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSClassMethodReferences ]
@@ -57,9 +71,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				addContextMenuItem: (self
 						createLabel: 'References in css'
 						description: node source)
-				group: (BrMenuItemGroupConfiguration new
-						name: 'CSS';
-						priority: 10)
+				group: group
 				hover: nil
 				leave: nil
 				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringSelectorReferences ]
@@ -72,12 +84,12 @@ GtCSSCoderModel >> asCoderViewModel [
 	^ GtCSSCoderViewModel new coder: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSCoderModel >> behavior [
 	^ self methodBehavior behavior
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSCoderModel >> compiledMethod [
 	^ self behavior >> self selector
 ]
@@ -172,6 +184,11 @@ GtCSSCoderModel >> initializeShortcuts: addOns [
 	addOns addShortcut: GtSourceCoderSaveShortcut new
 ]
 
+{ #category : #testing }
+GtCSSCoderModel >> isForMethod [
+	^ false
+]
+
 { #category : #accessing }
 GtCSSCoderModel >> methodBehavior [
 	^ methodBehavior
@@ -210,7 +227,30 @@ GtCSSCoderModel >> modifiedMessageAstFor: anAST into: coderAddOns [
 		id: GtMethodCoderDiscardChangesActionId
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #subscriptions }
+GtCSSCoderModel >> onMethodModified: aMethodModified [
+	| doesAffect |
+	doesAffect := self methodBehavior
+			realBehaviorDo: [ :aBehavior | 
+				aMethodModified classAffected = aBehavior
+					and: [ aMethodModified oldMethod selector = self selector
+							or: [ aMethodModified newMethod selector = self selector ] ] ]
+			ifAbsent: [ self methodBehavior
+					behaviorNameDo: [ :aBehaviorName | 
+						aMethodModified classAffected name = aBehaviorName
+							and: [ aMethodModified oldMethod selector = self selector
+									or: [ aMethodModified newMethod selector = self selector ] ] ]
+					ifAbsent: [ false ] ].
+
+	doesAffect ifFalse: [ ^ self ].
+
+	(aMethodModified newMethod pragmas
+		anySatisfy: [ :each | each selector = #cssString ]) ifFalse: [ ^ self ].
+
+	self forMethod: aMethodModified newMethod
+]
+
+{ #category : #accessing }
 GtCSSCoderModel >> package [
 	^ self compiledMethod package
 ]
@@ -248,4 +288,19 @@ GtCSSCoderModel >> selector [
 { #category : #accessing }
 GtCSSCoderModel >> selector: anObject [
 	selector := anObject
+]
+
+{ #category : #subscriptions }
+GtCSSCoderModel >> subscribeToSystem [
+	self unsubscribeFromSystem.
+
+	SystemAnnouncer uniqueInstance weak
+		when: MethodModified
+		send: #onMethodModified:
+		to: self
+]
+
+{ #category : #subscriptions }
+GtCSSCoderModel >> unsubscribeFromSystem [
+	SystemAnnouncer uniqueInstance unsubscribe: self
 ]
