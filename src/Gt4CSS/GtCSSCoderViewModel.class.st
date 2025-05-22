@@ -8,6 +8,11 @@ Class {
 GtCSSCoderViewModel >> allowSaveDueTo: anObject [ 
 ]
 
+{ #category : #accessing }
+GtCSSCoderViewModel >> behavior [
+	^ self coderModel behavior
+]
+
 { #category : #'api - accessing' }
 GtCSSCoderViewModel >> elementClass [
 	^ GtCSSExpandableSourceCoderElement
@@ -25,4 +30,9 @@ GtCSSCoderViewModel >> preventSaveDueTo: anObject [
 { #category : #'api - actions' }
 GtCSSCoderViewModel >> save [
 	^ self coderModel save
+]
+
+{ #category : #accessing }
+GtCSSCoderViewModel >> selector [
+	^ self coderModel selector
 ]

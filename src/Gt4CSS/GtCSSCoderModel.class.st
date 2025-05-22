@@ -11,7 +11,10 @@ Class {
 { #category : #adding }
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns: 10>
-	| allSelections allCursors node interval |
+	| allSelections allCursors node interval group |
+	group := BrMenuItemGroupConfiguration new
+			name: 'CSS';
+			priority: 10.
 	allSelections := aCoderViewModel selection allSelections.
 	allCursors := aCoderViewModel cursors allCursors.
 	interval := allSelections size = 1
@@ -28,9 +31,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 						addContextMenuItem: (self
 								createLabel: 'References to property'
 								description: node name source)
-						group: (BrMenuItemGroupConfiguration new
-								name: 'CSS';
-								priority: 10)
+						group: group
 						hover: nil
 						leave: nil
 						action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringPropertyReferences ]
@@ -42,21 +43,19 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				and: [ (node parent selectorParts identityIncludes: node)
 						and: [ node startPosition <= interval first
 								and: [ node stopPosition >= interval last ] ] ] ])
-		ifTrue: [ | group |
-			group := BrMenuItemGroupConfiguration new
-					name: 'CSS';
-					priority: 10.
-			coderAddOns
+		ifTrue: [ coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'Rename CSS class'
 						description: node source)
-				group: group
+				group: (BrMenuItemGroupConfiguration new
+						name: 'Refactoring';
+						priority: 5)
 				hover: nil
 				leave: nil
 				action: [ :cvm :element | 
 					(GtCSSStringRenameSelectorController new
 						sourceCoderViewModel: cvm;
-						originalNode: node) execute ]
+						originalNode: node) executeIn: element ]
 				id: #'context-menu--css-rename-selector'.
 			coderAddOns
 				addContextMenuItem: (self
@@ -76,7 +75,29 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				leave: nil
 				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringSelectorReferences ]
 				id: #'context-menu--css-string-reference'.
-			^ self ]
+			^ self ].
+
+	(node isKindOf: CSSDelimiterNode) ifTrue: [ node := node parent ].
+
+	(node isKindOf: CSSRulesetNode)
+		ifTrue: [ node selectorParts
+				doWithIndex: [ :each :i | 
+					((each isKindOf: CSSDelimiterNode)
+						and: [ (node selectorParts at: i - 1) stopPosition <= interval first
+								and: [ (node selectorParts at: i + 1) startPosition > interval last ] ])
+						ifTrue: [ coderAddOns
+								addContextMenuItem: (self
+										createLabel: 'Split ruleset'
+										description: node source)
+								group: (BrMenuItemGroupConfiguration new
+										name: 'Refactoring';
+										priority: 5)
+								hover: nil
+								leave: nil
+								action: [ :cvm :element | 
+									((GtCSSStringSplitRulesetRefactoringController new sourceCoderViewModel: cvm)
+										position: each startPosition) executeIn: element ]
+								id: #'context-menu--css-split-ruleset' ] ] ]
 ]
 
 { #category : #converting }
