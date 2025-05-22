@@ -147,6 +147,46 @@ GtCSSFileSamples >> cssRenameDefinitionFromMethod [
 ]
 
 { #category : #examples }
+GtCSSFileSamples >> cssSplitRuleset [
+	<gtExample>
+	| scripter |
+	scripter := self cssDefinitionFromCSSString.
+
+	scripter
+		doStep: [ :s | 
+			s
+				label: 'Select part of the selector';
+				// GtSourceCoderEditorId;
+				action: [ :aSourceEditor | 
+					aSourceEditor requestFocus.
+					aSourceEditor selecter
+						all;
+						select ] ].
+	(scripter type: 'h1, h2 { color: #abc; }') play.
+	scripter
+		doStep: [ :s | 
+			s
+				label: 'Select part of the selector';
+				// GtSourceCoderEditorId;
+				action: [ :aSourceEditor | 
+					aSourceEditor selecter
+						from: 3 to: 4;
+						select ] ].
+	scripter
+		secondaryClickStep: [ :s | 
+			s
+				label: 'Open context menu';
+				id: GtSourceCoderEditorId ].
+	scripter
+		clickStep: [ :s | 
+			s
+				onSpaceRoot;
+				id: #'context-menu--css-split-ruleset' ].
+
+	^ scripter
+]
+
+{ #category : #examples }
 GtCSSFileSamples >> doRenameIn: scripter [
 	| newName |
 	newName := 'a12345'.
