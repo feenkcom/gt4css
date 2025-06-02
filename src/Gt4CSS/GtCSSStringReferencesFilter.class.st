@@ -7,6 +7,11 @@ Class {
 	#category : #'Gt4CSS-Filter'
 }
 
+{ #category : #'as yet unclassified' }
+GtCSSStringReferencesFilter >> cssShowBehavior [
+	^ true
+]
+
 { #category : #accessing }
 GtCSSStringReferencesFilter >> defaultFilterScope [
 	^ AsyncCSSStringMethodsStream new

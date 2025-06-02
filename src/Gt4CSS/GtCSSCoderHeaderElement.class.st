@@ -4,7 +4,9 @@ Class {
 	#traits : 'TGtWithTextualCoderViewModel',
 	#classTraits : 'TGtWithTextualCoderViewModel classTrait',
 	#instVars : [
-		'selector'
+		'selector',
+		'packageButton',
+		'classButton'
 	],
 	#category : #'Gt4CSS-UI'
 }
@@ -15,11 +17,52 @@ GtCSSCoderHeaderElement >> behavior [
 	^ textualCoderViewModel coderModel behavior
 ]
 
+{ #category : #accessing }
+GtCSSCoderHeaderElement >> buildBreadcrumbs [
+	| breadcrumbs |
+	breadcrumbs := BrHorizontalPane new fitContent.
+	packageButton := BrButton new
+			fitContent;
+			aptitude: (BrGlamorousLabelAptitude new
+					foreground: BrGlamorousColors defaultButtonTextColor;
+					glamorousRegularSmallSize)
+					+ (BrStyleCommonAptitude new
+							default: [ :aStyle | 
+								aStyle
+									geometry: (BlRoundedRectangleGeometry cornerRadius: 4);
+									border: BlBorder empty ];
+							hovered: [ :aStyle | aStyle border: self theme button hoveredBorderColor ]);
+			label: self package name;
+			action: [ self spawnPackage ].
+	breadcrumbs addChild: packageButton.
+	breadcrumbs
+		addChild: (BrLabel new
+				aptitude: (BrGlamorousLabelAptitude new thin
+						padding: (BlInsets left: 5 right: 5);
+						foreground: self theme button defaultTextColor);
+				text: '>').
+	classButton := BrButton new
+			fitContent;
+			aptitude: (BrGlamorousLabelAptitude new
+					foreground: BrGlamorousColors defaultButtonTextColor;
+					glamorousRegularSmallSize)
+					+ (BrStyleCommonAptitude new
+							default: [ :aStyle | 
+								aStyle
+									geometry: (BlRoundedRectangleGeometry cornerRadius: 4);
+									border: BlBorder empty ];
+							hovered: [ :aStyle | aStyle border: self theme button hoveredBorderColor ]);
+			label: self behavior name;
+			action: [ self spawnBehavior ].
+	breadcrumbs addChild: classButton.
+	self
+		addChild: breadcrumbs
+		at: 1
+		as: #breadcrumbs
+]
+
 { #category : #initialization }
-GtCSSCoderHeaderElement >> initialize [
-	super initialize.
-	self vFitContent.
-	self hMatchParent.
+GtCSSCoderHeaderElement >> buildLabel [
 	selector := BrLabel new
 			vFitContent;
 			hMatchParent;
@@ -27,12 +70,23 @@ GtCSSCoderHeaderElement >> initialize [
 	self addChild: selector as: #cssSelector
 ]
 
+{ #category : #initialization }
+GtCSSCoderHeaderElement >> initialize [
+	super initialize.
+	self vFitContent.
+	self hMatchParent.
+	self buildBreadcrumbs.
+	self buildLabel
+]
+
 { #category : #'api - textual coder view model' }
 GtCSSCoderHeaderElement >> onTextualCoderViewModelChanged [
 	selector
 		text: (textualCoderViewModel
 				ifNil: [ '' ]
-				ifNotNil: [ textualCoderViewModel coder selector ]) asRopedText
+				ifNotNil: [ textualCoderViewModel coder selector ]) asRopedText.
+	packageButton label: self package name.
+	classButton label: self behavior name
 ]
 
 { #category : #accessing }
@@ -43,48 +97,11 @@ GtCSSCoderHeaderElement >> package [
 
 { #category : #accessing }
 GtCSSCoderHeaderElement >> showPackageAndClass: aBoolean [
-	self childNamed: #breadcrumbs ifFound: [ :each | self removeChild: each ].
-	aBoolean
-		ifTrue: [ | breadcrumbs |
-			breadcrumbs := BrHorizontalPane new fitContent.
-			breadcrumbs
-				addChild: (BrButton new
-						fitContent;
-						aptitude: (BrGlamorousLabelAptitude new
-								foreground: BrGlamorousColors defaultButtonTextColor;
-								glamorousRegularSmallSize)
-								+ (BrStyleCommonAptitude new
-										default: [ :aStyle | 
-											aStyle
-												geometry: (BlRoundedRectangleGeometry cornerRadius: 4);
-												border: BlBorder empty ];
-										hovered: [ :aStyle | aStyle border: self theme button hoveredBorderColor ]);
-						label: self package name;
-						action: [ self spawnPackage ]).
-			breadcrumbs
-				addChild: (BrLabel new
-						aptitude: (BrGlamorousLabelAptitude new thin
-								padding: (BlInsets left: 5 right: 5);
-								foreground: self theme button defaultTextColor);
-						text: '>').
-			breadcrumbs
-				addChild: (BrButton new
-						fitContent;
-						aptitude: (BrGlamorousLabelAptitude new
-								foreground: BrGlamorousColors defaultButtonTextColor;
-								glamorousRegularSmallSize)
-								+ (BrStyleCommonAptitude new
-										default: [ :aStyle | 
-											aStyle
-												geometry: (BlRoundedRectangleGeometry cornerRadius: 4);
-												border: BlBorder empty ];
-										hovered: [ :aStyle | aStyle border: self theme button hoveredBorderColor ]);
-						label: self behavior name;
-						action: [ self spawnBehavior ]).
-			self
-				addChild: breadcrumbs
-				at: 1
-				as: #breadcrumbs ]
+	self
+		childNamed: #breadcrumbs
+		ifFound: [ :each | 
+			each
+				visibility: (aBoolean ifTrue: [ BlVisibility visible ] ifFalse: [ BlVisibility gone ]) ]
 ]
 
 { #category : #'as yet unclassified' }

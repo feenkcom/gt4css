@@ -17,19 +17,9 @@ Class >> gtCSSStringsFor: aView context: aDictionary [
 	scripts := self gtCSSScripts.
 	scripts isEmpty ifTrue: [ ^ aView empty ].
 	lspModel := aDictionary at: #cssLSPModel ifAbsentPut: [ GtLSPCSSModel local ].
-	^ aView explicit
+	^ aView forward
 		title: 'CSS strings';
 		priority: 20;
-		stencil: [ | list |
-			list := BrSimpleList new
-					matchParent;
-					items: ((scripts asSortedCollection: [ :a :b | a method selector < b method selector ])
-							collect: [ :each | (GtCSSCoderModel new forMethod: each method) asCoderViewModel expanded: false ]);
-					itemType: [ :factory :each | each elementClass ];
-					itemStencil: [ :class | 
-						class new
-							vFitContentLimited;
-							lspModel: lspModel;
-							yourself ];
-					itemDataBinder: [ :eachCoderElement :eachCoderViewModel | eachCoderElement coderViewModel: eachCoderViewModel ] ]
+		object: [ GtCSSStringClassFilter forClass: self ];
+		view: #gtItemsFor:
 ]
