@@ -102,7 +102,9 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 
 { #category : #converting }
 GtCSSCoderModel >> asCoderViewModel [
-	^ GtCSSCoderViewModel new coder: self
+	^ GtCSSCoderViewModel new
+		coder: self;
+		yourself
 ]
 
 { #category : #accessing }
