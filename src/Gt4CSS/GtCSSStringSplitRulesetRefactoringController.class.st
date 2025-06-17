@@ -12,7 +12,7 @@ GtCSSStringSplitRulesetRefactoringController >> createRefactoringModel [
 	| model class source |
 	class := sourceCoderViewModel behavior.
 	source := sourceCoderViewModel coderModel methodSource.
-	model := RBClassModelFactory rbNamespace
+	model := Smalltalk createRbNamespace
 			onEnvironment: RBBrowserEnvironment new.
 	(model classFor: class) compile: source classified: #accessing.
 	model name: self refactoringName.
