@@ -58,7 +58,7 @@ GtCSSStringSplitRulesetRefactoring >> preconditions [
 ]
 
 { #category : #transforming }
-GtCSSStringSplitRulesetRefactoring >> privateTranform [
+GtCSSStringSplitRulesetRefactoring >> privateTransform [
 	self basicTransform
 ]
 
