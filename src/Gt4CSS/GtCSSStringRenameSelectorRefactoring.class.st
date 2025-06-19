@@ -25,6 +25,12 @@ GtCSSStringRenameSelectorRefactoring class >> rename: oldName to: newName [
 		yourself
 ]
 
+{ #category : #transforming }
+GtCSSStringRenameSelectorRefactoring >> basicTransform [
+	self renameDefinitions.
+	self renameUsages
+]
+
 { #category : #accessing }
 GtCSSStringRenameSelectorRefactoring >> newName [
 	^ newName
@@ -62,6 +68,11 @@ GtCSSStringRenameSelectorRefactoring >> potentialUsagesDo: aBlock [
 { #category : #preconditions }
 GtCSSStringRenameSelectorRefactoring >> preconditions [
 	^ RBCondition withBlock: [ true ]
+]
+
+{ #category : #transforming }
+GtCSSStringRenameSelectorRefactoring >> privateTranform [
+	self basicTransform
 ]
 
 { #category : #transforming }
@@ -111,6 +122,5 @@ GtCSSStringRenameSelectorRefactoring >> renameUsages [
 
 { #category : #transforming }
 GtCSSStringRenameSelectorRefactoring >> transform [
-	self renameDefinitions.
-	self renameUsages
+	self basicTransform
 ]

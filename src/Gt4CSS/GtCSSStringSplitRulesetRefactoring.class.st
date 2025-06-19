@@ -27,6 +27,21 @@ GtCSSStringSplitRulesetRefactoring class >> splitAt: anInteger inMethod: aSelect
 		yourself
 ]
 
+{ #category : #transforming }
+GtCSSStringSplitRulesetRefactoring >> basicTransform [
+	| rewriter method |
+	rewriter := RBParseTreeRewriter new.
+	rewriter
+		replace: '^ `#s `{:node | node value isString}'
+		withValueFrom: [ :node | 
+			RBReturnNode
+				value: (RBLiteralValueNode value: (self splitSource: node value value)) ].
+	method := class methodFor: selector.
+	((rewriter executeTree: method ast) and: [ method ast ~= rewriter tree ])
+		ifTrue: [ method compileTree: rewriter tree ]
+		ifFalse: [ self refactoringError: 'Could not split ruleset' ]
+]
+
 { #category : #initialization }
 GtCSSStringSplitRulesetRefactoring >> methodClass: aClass [
 	class := self model classFor: aClass
@@ -40,6 +55,11 @@ GtCSSStringSplitRulesetRefactoring >> position: anObject [
 { #category : #preconditions }
 GtCSSStringSplitRulesetRefactoring >> preconditions [
 	^ RBCondition definesSelector: selector in: class
+]
+
+{ #category : #transforming }
+GtCSSStringSplitRulesetRefactoring >> privateTranform [
+	self basicTransform
 ]
 
 { #category : #initialization }
@@ -75,15 +95,5 @@ GtCSSStringSplitRulesetRefactoring >> splitSource: source [
 
 { #category : #transforming }
 GtCSSStringSplitRulesetRefactoring >> transform [
-	| rewriter method |
-	rewriter := RBParseTreeRewriter new.
-	rewriter
-		replace: '^ `#s `{:node | node value isString}'
-		withValueFrom: [ :node | 
-			RBReturnNode
-				value: (RBLiteralValueNode value: (self splitSource: node value value)) ].
-	method := class methodFor: selector.
-	((rewriter executeTree: method ast) and: [ method ast ~= rewriter tree ])
-		ifTrue: [ method compileTree: rewriter tree ]
-		ifFalse: [ self refactoringError: 'Could not split ruleset' ]
+	self basicTransform
 ]
