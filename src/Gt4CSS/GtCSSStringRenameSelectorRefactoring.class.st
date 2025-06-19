@@ -71,7 +71,7 @@ GtCSSStringRenameSelectorRefactoring >> preconditions [
 ]
 
 { #category : #transforming }
-GtCSSStringRenameSelectorRefactoring >> privateTranform [
+GtCSSStringRenameSelectorRefactoring >> privateTransform [
 	self basicTransform
 ]
 
