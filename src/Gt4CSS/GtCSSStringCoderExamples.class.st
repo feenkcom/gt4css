@@ -121,6 +121,55 @@ GtCSSStringCoderExamples >> generateClassWithCSS [
 		do: [ :i | cls compile: (self sourceForIndex: i) classified: #'css string' ]
 ]
 
+{ #category : #'examples - scripter' }
+GtCSSStringCoderExamples >> highlighter [
+	<gtExample>
+	| scripter |
+	scripter := self expandCSSItem.
+	scripter
+		doStep: [ :s | 
+			s
+				// GtSourceCoderEditorId;
+				block: [ :each | 
+					each selecter
+						from: 25 to: 26;
+						select ] ].
+	scripter
+		secondaryClickStep: [ :s | 
+			s
+				label: 'Open menu';
+				// GtSourceCoderEditorId ].
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Open references';
+				onSpaceRoot;
+				// #'context-menu--css-property-reference' ].
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Expand coder';
+				id: GtPagerPageElementId index: 2;
+				on: GtCSSCoderCollapsedContentElement index: 1 ].
+	scripter
+		doStep: [ :s | 
+			s
+				id: GtPagerPageElementId index: 2;
+				// GtSourceCoderEditorId;
+				block: [ :each | 
+					| found |
+					found := false.
+					each text attributesFinder
+						findAttribute: GtSourceReferenceHighlighter highlightAttribute
+						indicesDo: [ :first :last | 
+							found := true.
+							self
+								assert: (each text from: first to: last) asString
+								equals: 'background' ].
+					self assert: found ] ].
+	^ scripter
+]
+
 { #category : #'as yet unclassified' }
 GtCSSStringCoderExamples >> methodUpdatedFromOutsideCoder [
 	<gtExample>

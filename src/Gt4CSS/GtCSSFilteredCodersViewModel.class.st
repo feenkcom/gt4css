@@ -4,7 +4,7 @@ Class {
 	#category : #'Gt4CSS-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #views }
 GtCSSFilteredCodersViewModel >> gtViewFor: aView context: aDictionary [
 	<gtView>
 	| lspModel |
@@ -19,7 +19,10 @@ GtCSSFilteredCodersViewModel >> gtViewFor: aView context: aDictionary [
 				yourself ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 GtCSSFilteredCodersViewModel >> newCoderViewModelFor: aCoderModel [
-	^ aCoderModel asCoderViewModel expanded: false
+	^ aCoderModel asCoderViewModel
+		highlighter: self highlighter;
+		expanded: false;
+		yourself
 ]

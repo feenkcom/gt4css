@@ -425,39 +425,6 @@ It means that the navigation item highlight will start at the
     font-weight: bold;
 }
 
-/* Indent inner-navigation index links */
-.le-nav-link.le-nav-level-2  {
-    padding-left: calc(2 * var(--link-indent));
-}
-
-.le-nav-link.le-nav-level-3  {
-    padding-left: calc(3 * var(--link-indent));
-}
-
-.le-nav-link.le-nav-level-4  {
-    padding-left: calc(4 * var(--link-indent));
-}
-
-.le-nav-link.le-nav-level-5  {
-    padding-left: calc(5 * var(--link-indent));
-}
-
-.le-nav-link.le-nav-level-6  {
-    padding-left: calc(6 * var(--link-indent));
-}
-
-.le-nav-link.le-nav-level-7  {
-    padding-left: calc(7 * var(--link-indent));
-}
-
-.le-nav-link.le-nav-level-8  {
-    padding-left: calc(8 * var(--link-indent));
-}
-
-.le-nav-link.le-nav-level-9  {
-    padding-left: calc(9 * var(--link-indent));
-}
-
 /*
 	Meta data
 */
@@ -532,6 +499,45 @@ h1.le-main-title {
 .le-main-container h5,
 .le-main-container h6 {
   margin-block-start: 0.5em;
+}
+'
+]
+
+{ #category : #'css strings' }
+GtCSSFileSamples >> lepiter_common_navLink [
+	<cssString>
+	^ '
+    /* Indent inner-navigation index links */
+.le-nav-link.le-nav-level-2  {
+    padding-left: calc(2 * var(--link-indent));
+}
+
+.le-nav-link.le-nav-level-3  {
+    padding-left: calc(3 * var(--link-indent));
+}
+
+.le-nav-link.le-nav-level-4  {
+    padding-left: calc(4 * var(--link-indent));
+}
+
+.le-nav-link.le-nav-level-5  {
+    padding-left: calc(5 * var(--link-indent));
+}
+
+.le-nav-link.le-nav-level-6  {
+    padding-left: calc(6 * var(--link-indent));
+}
+
+.le-nav-link.le-nav-level-7  {
+    padding-left: calc(7 * var(--link-indent));
+}
+
+.le-nav-link.le-nav-level-8  {
+    padding-left: calc(8 * var(--link-indent));
+}
+
+.le-nav-link.le-nav-level-9  {
+    padding-left: calc(9 * var(--link-indent));
 }
 '
 ]
