@@ -24,6 +24,11 @@ GtCSSCoderViewModel >> headerElementClass [
 ]
 
 { #category : #accessing }
+GtCSSCoderViewModel >> highlighter: aStyler [
+	self coder highlighter: aStyler
+]
+
+{ #category : #accessing }
 GtCSSCoderViewModel >> preventSaveDueTo: anObject [
 ]
 
