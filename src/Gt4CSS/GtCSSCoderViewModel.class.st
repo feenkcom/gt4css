@@ -28,6 +28,14 @@ GtCSSCoderViewModel >> highlighter: aStyler [
 	self coder highlighter: aStyler
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderViewModel >> isMeta [
+	"Return true if the method is implemented in a pharo metaclass (~ class side)"
+
+	<return: #Boolean>
+	^ self coderModel isMeta
+]
+
 { #category : #accessing }
 GtCSSCoderViewModel >> preventSaveDueTo: anObject [
 ]

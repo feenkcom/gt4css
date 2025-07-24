@@ -2,7 +2,8 @@ Class {
 	#name : #GtCSSSourceCoderExpandedContentElement,
 	#superclass : #GtSourceCoderExpandedContentElement,
 	#instVars : [
-		'lspModel'
+		'lspModel',
+		'label'
 	],
 	#category : #'Gt4CSS-UI'
 }
@@ -10,6 +11,18 @@ Class {
 { #category : #updating }
 GtCSSSourceCoderExpandedContentElement >> editorChangedTo: aString [
 	self lspFile ifNotNil: [ :file | file source: aString ]
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSSourceCoderExpandedContentElement >> initialize [
+	super initialize.
+	label := BlAttributedTextElement new
+			id: GtSourceCoderCollapsedTextId;
+			editorMeasurement;
+			bold;
+			glamorousCodeFont;
+			foreground: self theme label defaultTextForeground.
+	self addChildFirst: label
 ]
 
 { #category : #accessing }
@@ -73,6 +86,7 @@ GtCSSSourceCoderExpandedContentElement >> updateAptitude: editor [
 	aptitude := GtLSPEditorAptitude new.
 	aptitude lspFile: self lspFile.
 	editor aptitude: aptitude.
+	textualCoderViewModel ifNotNil: [label text: textualCoderViewModel coder selector asRopedText].
 	editor
 		addAptitude: (BrGlamorousWithExplicitContextMenuAptitude menu: [ editor createContextMenu ])
 ]

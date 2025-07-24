@@ -1,6 +1,6 @@
 Class {
 	#name : #GtCSSExpandableSourceCoderElement,
-	#superclass : #GtExpandableSourceCoderElement,
+	#superclass : #GtExpandableMethodCoderElement,
 	#instVars : [
 		'lspModel',
 		'showPackageAndClass'
@@ -10,8 +10,8 @@ Class {
 
 { #category : #'as yet unclassified' }
 GtCSSExpandableSourceCoderElement >> initialize [
+	showPackageAndClass := false.
 	super initialize.
-	showPackageAndClass := false
 ]
 
 { #category : #accessing }
@@ -44,6 +44,12 @@ GtCSSExpandableSourceCoderElement >> newExpandedElement [
 		ifNotNil: [ :aCoder | self assignExpandedCoder: aCoder to: anExpandedElement ].
 	anExpandedElement showPackageAndClass: showPackageAndClass.
 	^ anExpandedElement
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSExpandableSourceCoderElement >> onTextualCoderViewModelChanged [
+	super onTextualCoderViewModelChanged.
+	
 ]
 
 { #category : #accessing }
