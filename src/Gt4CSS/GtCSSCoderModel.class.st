@@ -112,6 +112,11 @@ GtCSSCoderModel >> behavior [
 	^ self methodBehavior behavior
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> collapsedText [
+	^selector asRopedText
+]
+
 { #category : #accessing }
 GtCSSCoderModel >> compiledMethod [
 	^ self behavior >> self selector
@@ -197,6 +202,14 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 		icon: BrGlamorousVectorIcons accept
 		action: [ :aCoderUIModel :anElement | aCoderUIModel save ]
 		id: GtMethodCoderSaveActionId.
+	addOns
+		addMainAction: 'Inspect Method' translated
+		icon: BrGlamorousVectorIcons inspect
+		action: [ :aCoderUIModel :anElement | 
+			self
+				notifyObjectSpawn: aCoderUIModel behavior >> aCoderUIModel selector
+				requesterObject: aCoderUIModel ]
+		id: GtMethodCoderInspectActionId.
 	self initializeSearchTextAddOns: addOns viewModel: aGtPharoMethodCoderViewModel
 ]
 
@@ -210,6 +223,14 @@ GtCSSCoderModel >> initializeShortcuts: addOns [
 { #category : #testing }
 GtCSSCoderModel >> isForMethod [
 	^ false
+]
+
+{ #category : #testing }
+GtCSSCoderModel >> isMeta [
+	"Return true if the method is implemented in a pharo metaclass (~ class side)"
+
+	<return: #Boolean>
+	^ self behavior isMeta
 ]
 
 { #category : #accessing }
@@ -289,6 +310,11 @@ GtCSSCoderModel >> primitiveEvaluate: aSourceString inContext: aGtSourceCoderEva
 ]
 
 { #category : #accessing }
+GtCSSCoderModel >> protocol [
+	^ (self methodBehavior behavior methodNamed: self selector) protocol
+]
+
+{ #category : #accessing }
 GtCSSCoderModel >> save [
 	self methodBehavior
 		realBehaviorDo: [ :cls | 
@@ -321,6 +347,11 @@ GtCSSCoderModel >> subscribeToSystem [
 		when: MethodModified
 		send: #onMethodModified:
 		to: self
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> testCase [
+	^nil
 ]
 
 { #category : #subscriptions }

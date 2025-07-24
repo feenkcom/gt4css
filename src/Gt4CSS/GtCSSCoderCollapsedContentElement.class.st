@@ -7,7 +7,7 @@ Class {
 { #category : #initialization }
 GtCSSCoderCollapsedContentElement >> initialize [
 	super initialize.
-	self removeChild: content
+	"self removeChild: content"
 ]
 
 { #category : #'as yet unclassified' }
