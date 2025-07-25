@@ -20,7 +20,7 @@ GtCSSCoderModel class >> initialize [
 ]
 
 { #category : #'coder selection' }
-GtCSSCoderModel class >> isCoderValidFor: aCompiledMethod in: aClass [
+GtCSSCoderModel class >> isCoderValidFor: aCompiledMethod [
 	^ (aCompiledMethod pragmaAt: #cssString) isNotNil
 ]
 
