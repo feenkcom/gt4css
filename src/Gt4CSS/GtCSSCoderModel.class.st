@@ -228,7 +228,7 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 		icon: BrGlamorousVectorIcons inspect
 		action: [ :aCoderUIModel :anElement | 
 			self
-				notifyObjectSpawn: aCoderUIModel behavior >> aCoderUIModel selector
+				notifyObjectSpawn: (aCoderUIModel behavior >> aCoderUIModel selector) methodReference
 				requesterObject: aCoderUIModel ]
 		id: GtMethodCoderInspectActionId.
 	self initializeSearchTextAddOns: addOns viewModel: aGtPharoMethodCoderViewModel
