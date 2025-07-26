@@ -132,6 +132,11 @@ GtCSSCoderModel >> computeAst: aString [
 	^ CSSParser parseWithErrors: aString
 ]
 
+{ #category : #accessing }
+GtCSSCoderModel >> example [
+	^nil
+]
+
 { #category : #'instance creation' }
 GtCSSCoderModel >> forMethod: aCompiledMethod [
 	| source |
