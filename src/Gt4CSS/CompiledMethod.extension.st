@@ -1,6 +1,12 @@
 Extension { #name : #CompiledMethod }
 
 { #category : #'*Gt4CSS' }
+CompiledMethod >> gtCSSMethodCoder [
+	<gtMethodCoder: 10>
+	^ (self pragmaAt: #cssString) ifNotNil: [ GtCSSCoderModel ] ifNil: [ nil ]
+]
+
+{ #category : #'*Gt4CSS' }
 CompiledMethod >> gtCSSStringFor: aView [
 	<gtView>
 	(self pragmas anySatisfy: [ :each | each selector = #cssString ])

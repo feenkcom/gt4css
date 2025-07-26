@@ -13,22 +13,6 @@ GtCSSCoderModel class >> forMethod: aCompiledMethod in: behavior [
 	^ self new forMethod: aCompiledMethod
 ]
 
-{ #category : #initialization }
-GtCSSCoderModel class >> initialize [
-	super initialize.
-	GtMethodCoderRegistry default addCoderClass: self
-]
-
-{ #category : #'coder selection' }
-GtCSSCoderModel class >> isCoderValidFor: aCompiledMethod [
-	^ (aCompiledMethod pragmaAt: #cssString) isNotNil
-]
-
-{ #category : #'coder selection' }
-GtCSSCoderModel class >> priority [
-	^10
-]
-
 { #category : #adding }
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns: 10>
