@@ -13,22 +13,6 @@ GtCSSCoderModel class >> forMethod: aCompiledMethod in: behavior [
 	^ self new forMethod: aCompiledMethod
 ]
 
-{ #category : #initialization }
-GtCSSCoderModel class >> initialize [
-	super initialize.
-	GtMethodCoderRegistry default addCoderClass: self
-]
-
-{ #category : #'coder selection' }
-GtCSSCoderModel class >> isCoderValidFor: aCompiledMethod in: aClass [
-	^ (aCompiledMethod pragmaAt: #cssString) isNotNil
-]
-
-{ #category : #'coder selection' }
-GtCSSCoderModel class >> priority [
-	^10
-]
-
 { #category : #adding }
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns: 10>
@@ -148,6 +132,11 @@ GtCSSCoderModel >> computeAst: aString [
 	^ CSSParser parseWithErrors: aString
 ]
 
+{ #category : #accessing }
+GtCSSCoderModel >> example [
+	^nil
+]
+
 { #category : #'instance creation' }
 GtCSSCoderModel >> forMethod: aCompiledMethod [
 	| source |
@@ -228,7 +217,7 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 		icon: BrGlamorousVectorIcons inspect
 		action: [ :aCoderUIModel :anElement | 
 			self
-				notifyObjectSpawn: aCoderUIModel behavior >> aCoderUIModel selector
+				notifyObjectSpawn: (aCoderUIModel behavior >> aCoderUIModel selector) methodReference
 				requesterObject: aCoderUIModel ]
 		id: GtMethodCoderInspectActionId.
 	self initializeSearchTextAddOns: addOns viewModel: aGtPharoMethodCoderViewModel
