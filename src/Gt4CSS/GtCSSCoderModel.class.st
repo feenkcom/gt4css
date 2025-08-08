@@ -118,6 +118,42 @@ GtCSSCoderModel >> behavior [
 ]
 
 { #category : #'as yet unclassified' }
+GtCSSCoderModel >> behavior: aBehavior [
+	self methodBehavior: (GtPharoCoderBehavior explicit: aBehavior)
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> canCompileMethodIn: newClass [
+	| ast modelClass pools variables model |
+	ast := self rbAST.
+	variables := Set new.
+	ast
+		nodesDo: [ :node | 
+			(node isSelfOrSuper not
+				and: [ node isVariable and: [ node gtIsLocal not ] ])
+				ifTrue: [ variables add: node name ] ].
+	model := RBNamespace new.
+	modelClass := model classFor: newClass.
+	pools := {Smalltalk} , modelClass instanceSide sharedPools.
+	^ variables
+		allSatisfy: [ :each | 
+			(modelClass definesVariable: each)
+				or: [ pools anySatisfy: [ :pool | pool includesKey: each asSymbol ] ] ]
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> canMoveMethodToInstanceOrClass [
+	| oldClass newClass |
+	oldClass := self behavior.
+	newClass := oldClass isMeta
+		ifTrue: [ oldClass soleInstance ]
+		ifFalse: [ oldClass class ].
+	(newClass includesSelector: self currentSelector)
+		ifTrue: [ ^ false ].
+	^ self canCompileMethodIn: newClass
+]
+
+{ #category : #'as yet unclassified' }
 GtCSSCoderModel >> collapsedText [
 	^selector asRopedText
 ]
@@ -130,6 +166,25 @@ GtCSSCoderModel >> compiledMethod [
 { #category : #'api - ast' }
 GtCSSCoderModel >> computeAst: aString [
 	^ CSSParser parseWithErrors: aString
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> currentSelector [
+	^ self currentSelectorPromise wait
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> currentSelectorPromise [
+	selector
+		ifNotNil: [ ^ selector asAsyncPromise ].
+
+	^ self ast then: [ :aGtCoderAst |
+		| anAst |
+		
+		anAst := aGtCoderAst ast.
+		anAst isMethod
+			ifFalse: [ #faulty ]
+			ifTrue: [ anAst selector ifNil: [ #faulty ] ] ]
 ]
 
 { #category : #accessing }
@@ -243,6 +298,11 @@ GtCSSCoderModel >> isMeta [
 	^ self behavior isMeta
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> isNewMethod [
+	^ self currentSourceString isEmpty
+]
+
 { #category : #accessing }
 GtCSSCoderModel >> methodBehavior [
 	^ methodBehavior
@@ -281,6 +341,39 @@ GtCSSCoderModel >> modifiedMessageAstFor: anAST into: coderAddOns [
 		id: GtMethodCoderDiscardChangesActionId
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> moveMethodToInstanceOrClass [
+	| oldClass newClass model modelClass oldModelClass |
+	oldClass := self behavior.
+	newClass := oldClass isMeta
+			ifTrue: [ oldClass soleInstance ]
+			ifFalse: [ oldClass class ].
+	(self isNewMethod or: [ self isModified ])
+		ifTrue: [ self behavior: newClass.
+			^ self ]. 
+	self canMoveMethodToInstanceOrClass ifFalse: [ ^ self ].
+	model := RBNamespace new.
+	modelClass := model classFor: newClass.
+	modelClass compile: self methodSource classified: self protocol.
+	oldModelClass := model classFor: oldClass.
+	(oldModelClass directlyDefinesMethod: self currentSelector)
+		ifTrue: [ oldModelClass removeMethod: self currentSelector ].
+	self behavior: newClass.
+	[ model changes execute ] ifCurtailed: [ self behavior: oldClass ]
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> newRbAST: source [
+	| ast |
+	self isModified
+		ifFalse: [ self compiledMethod ifNotNil: [ :m | ^ m ast ] ].
+	ast := self parseMethod: source.
+	ast isParseError
+		ifTrue: [ ^ ast ].
+	ast doSemanticAnalysis.
+	^ ast
+]
+
 { #category : #subscriptions }
 GtCSSCoderModel >> onMethodModified: aMethodModified [
 	| doesAffect |
@@ -309,6 +402,21 @@ GtCSSCoderModel >> package [
 	^ self compiledMethod package
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> parse: aString asExpression: isExpression requestor: aRequestor [
+	^ (self behavior ifNil: [ UndefinedObject ]) compiler
+		source: aString;
+		isScripting: isExpression;
+		options: #(+ optionParseErrors + optionSkipSemanticWarnings);
+		requestor: aRequestor;
+		parse
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> parseMethod: aString [
+	^ self parse: aString asExpression: false requestor: nil
+]
+
 { #category : #'private - actions' }
 GtCSSCoderModel >> primitiveDebug: aSourceString inContext: aGtSourceCoderEvaluationContext onFailDo: anEvaluationFailBlock [
 	"Nothing to evaluate"
@@ -322,6 +430,19 @@ GtCSSCoderModel >> primitiveEvaluate: aSourceString inContext: aGtSourceCoderEva
 { #category : #accessing }
 GtCSSCoderModel >> protocol [
 	^ (self methodBehavior behavior methodNamed: self selector) protocol
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> rbAST [
+	| source |
+
+	"The AST should be built out of the `characters` of the source text.
+	This is needed to support `crlf` and logical items
+	see https://github.com/feenkcom/gtoolkit/issues/593"
+	source := self currentSourceString.
+	^ [ self newRbAST: self methodSource ]
+		on: Error
+		do: [ :ex | ex return: nil ]
 ]
 
 { #category : #accessing }
