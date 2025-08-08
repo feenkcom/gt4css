@@ -2,7 +2,7 @@ Extension { #name : #CompiledMethod }
 
 { #category : #'*Gt4CSS' }
 CompiledMethod >> gtCSSMethodCoder [
-	<gtMethodCoder: 10>
+	"<gtMethodCoder: 10>"
 	^ (self pragmaAt: #cssString) ifNotNil: [ GtCSSCoderModel ]
 ]
 
