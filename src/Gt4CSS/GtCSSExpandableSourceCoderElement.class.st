@@ -28,7 +28,7 @@ GtCSSExpandableSourceCoderElement >> lspModel: anObject [
 { #category : #'private - instance creation' }
 GtCSSExpandableSourceCoderElement >> newCollapsedElement [
 	| aCollapsedElement |
-	aCollapsedElement := GtCSSCoderCollapsedContentElement new.
+	aCollapsedElement := GtCSSSourceCoderCollapsedContentElement new.
 	textualCoderViewModel
 		ifNotNil: [ :aCoder | self assignCollapsedCoder: aCoder to: aCollapsedElement ].
 	aCollapsedElement showPackageAndClass: showPackageAndClass.
@@ -46,20 +46,14 @@ GtCSSExpandableSourceCoderElement >> newExpandedElement [
 	^ anExpandedElement
 ]
 
-{ #category : #'as yet unclassified' }
-GtCSSExpandableSourceCoderElement >> onTextualCoderViewModelChanged [
-	super onTextualCoderViewModelChanged.
-	
-]
-
 { #category : #accessing }
 GtCSSExpandableSourceCoderElement >> showPackageAndClass [
 	^ showPackageAndClass
 ]
 
 { #category : #accessing }
-GtCSSExpandableSourceCoderElement >> showPackageAndClass: anObject [
-	showPackageAndClass := anObject.
+GtCSSExpandableSourceCoderElement >> showPackageAndClass: aBoolean [
+	showPackageAndClass := aBoolean.
 	self updateHeaders
 ]
 

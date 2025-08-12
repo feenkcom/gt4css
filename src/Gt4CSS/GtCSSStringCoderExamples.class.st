@@ -30,8 +30,8 @@ GtCSSStringCoderExamples >> addMethod [
 		clickStep: [ :s | 
 			s
 				label: 'Click CSS string';
-				// GtCSSCoderHeaderElement;
-				// BrLabel;
+				// GtCSSExpandableSourceCoderElement;
+				// BlAttributedTextElement;
 				@ [ :each | each text asString = 'aaa' ] ].
 	^ scripter
 ]
@@ -42,8 +42,8 @@ GtCSSStringCoderExamples >> check: scripter selector: aString exists: aBoolean [
 		checkStep: [ :s | 
 			s
 				label: 'Check for ' , aString;
-				// GtCSSCoderHeaderElement;
-				// BrLabel;
+				// GtCSSExpandableSourceCoderElement;
+				// BlAttributedTextElement;
 				@ [ :each | each text asString = aString ].
 			aBoolean ifTrue: [ s exists ] ifFalse: [ s notExists ] ].
 	^ scripter
@@ -99,8 +99,8 @@ GtCSSStringCoderExamples >> expandCSSItem [
 		clickStep: [ :s | 
 			s
 				label: 'Click CSS string';
-				// GtCSSCoderHeaderElement;
-				// BrLabel;
+				// GtCSSExpandableSourceCoderElement;
+				// BlAttributedTextElement;
 				@ [ :each | each text asString = 'background111' ] ].
 	^ scripter
 ]
@@ -150,7 +150,7 @@ GtCSSStringCoderExamples >> highlighter [
 			s
 				label: 'Expand coder';
 				id: GtPagerPageElementId index: 2;
-				on: GtCSSCoderCollapsedContentElement index: 1 ].
+				on: GtCSSSourceCoderCollapsedContentElement index: 1 ].
 	scripter
 		doStep: [ :s | 
 			s

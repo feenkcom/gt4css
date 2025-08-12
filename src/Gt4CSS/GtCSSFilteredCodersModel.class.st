@@ -26,8 +26,8 @@ GtCSSFilteredCodersModel >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
-GtCSSFilteredCodersModel >> newCoderFor: anObject [
-	^ GtCSSCoderModel new forMethod: anObject
+GtCSSFilteredCodersModel >> newCoderFor: aMethod [
+	^ GtCSSCoderModel new forMethod: aMethod
 ]
 
 { #category : #'as yet unclassified' }
