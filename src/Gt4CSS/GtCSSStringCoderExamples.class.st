@@ -37,6 +37,57 @@ GtCSSStringCoderExamples >> addMethod [
 ]
 
 { #category : #'as yet unclassified' }
+GtCSSStringCoderExamples >> changeProtocol [
+	<gtExample>
+	| scripter |
+	scripter := self expandCSSItem.
+	scripter clickStep: [:s | 
+		s
+			label: 'Click protocol button';
+			// GtCSSExpandableSourceCoderElement;
+			@ [:each | each isExpanded ];
+			// GtPharoProtocolTagId].
+	scripter typeStep: [:s | 
+		s
+				label: 'Fill new protocol';
+				text: 'foo'
+	].
+	scripter
+		keyPressStep: [ :s | 
+			s
+				label: 'Complete name';
+				key: BlKeyboardKey return ].
+	self assert: (environment anyDummyClass realClass >> #background111) protocol equals: 'foo'.
+	^ scripter
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSStringCoderExamples >> changeToClassSideMethod [
+	<gtExample>
+	| scripter |
+	scripter := self expandCSSItem.
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Click side button';
+				// GtCSSExpandableSourceCoderElement;
+				@ [ :each | each isExpanded ];
+				// GtPharoSideTagId ].
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Click side button';
+				onSpaceRoot;
+				onDropdown: true;
+				onBrButtonName: 'class' ].
+	self
+		assert: (environment anyDummyClass realClass selectors includes: #background111) not.
+	self
+		assert: (environment anyDummyClass realClass class selectors includes: #background111).
+	^ scripter
+]
+
+{ #category : #'as yet unclassified' }
 GtCSSStringCoderExamples >> check: scripter selector: aString exists: aBoolean [
 	scripter
 		checkStep: [ :s | 
