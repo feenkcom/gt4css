@@ -433,6 +433,16 @@ GtCSSCoderModel >> protocol [
 ]
 
 { #category : #'as yet unclassified' }
+GtCSSCoderModel >> protocol: aSymbol [
+	(self methodBehavior behavior methodNamed: self selector) protocol: aSymbol.
+	self
+		announce: (GtCoderProtocolChanged new
+				newProtocol: aSymbol;
+				coder: self;
+				yourself)
+]
+
+{ #category : #'as yet unclassified' }
 GtCSSCoderModel >> rbAST [
 	| source |
 
@@ -443,6 +453,18 @@ GtCSSCoderModel >> rbAST [
 	^ [ self newRbAST: self methodSource ]
 		on: Error
 		do: [ :ex | ex return: nil ]
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> renameProtocol: aString [ 
+	| change |
+	self protocol: aString asSymbol.
+	selector notNil
+		ifTrue: [ change := RBMethodProtocolChange
+				selector: selector
+				in: self behavior
+				classified: self protocol.
+			change execute ]
 ]
 
 { #category : #accessing }
