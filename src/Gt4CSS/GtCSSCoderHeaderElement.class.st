@@ -62,29 +62,15 @@ GtCSSCoderHeaderElement >> buildBreadcrumbs [
 ]
 
 { #category : #initialization }
-GtCSSCoderHeaderElement >> buildLabel [
-	selector := BrLabel new
-			vFitContent;
-			hMatchParent;
-			aptitude: BrGlamorousLabelAptitude new glamorousCodeFont bold.
-	self addChild: selector as: #cssSelector
-]
-
-{ #category : #initialization }
 GtCSSCoderHeaderElement >> initialize [
 	super initialize.
 	self vFitContent.
 	self hMatchParent.
-	self buildBreadcrumbs.
-	self buildLabel
+	self buildBreadcrumbs
 ]
 
 { #category : #'api - textual coder view model' }
 GtCSSCoderHeaderElement >> onTextualCoderViewModelChanged [
-	selector
-		text: (textualCoderViewModel
-				ifNil: [ '' ]
-				ifNotNil: [ textualCoderViewModel coder selector ]) asRopedText.
 	packageButton label: self package name.
 	classButton label: self behavior name
 ]

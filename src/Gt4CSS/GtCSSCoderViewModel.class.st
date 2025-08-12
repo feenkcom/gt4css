@@ -15,6 +15,16 @@ GtCSSCoderViewModel >> behavior [
 	^ self coderModel behavior
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderViewModel >> collapsedTextPromise [
+	^ self currentSelectorPromise then: [ :aSelector | aSelector asRopedText ]
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderViewModel >> currentSelectorPromise [
+	^ self coderModel currentSelectorPromise
+]
+
 { #category : #'api - accessing' }
 GtCSSCoderViewModel >> elementClass [
 	^ GtCSSExpandableSourceCoderElement
