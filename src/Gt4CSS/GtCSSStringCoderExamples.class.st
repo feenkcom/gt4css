@@ -246,17 +246,23 @@ GtCSSStringCoderExamples >> methodUpdatedFromOutsideCoder [
 GtCSSStringCoderExamples >> removeMethod [
 	<gtExample>
 	| scripter |
-	scripter := self cssStringCoder.
+	scripter := self expandCSSItem.
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Click remove method button';
+				// GtCSSExpandableSourceCoderElement;
+				@ [ :each | each isExpanded ];
+				// GtMethodCoderRemoveActionId ];
+		clickStep: [ :s | 
+			s
+				label: 'Click final remove button';
+				onSpaceRoot;
+				onDropdown: true;
+				// #'change-button-action' ].
 	self
-		check: scripter
-		selector: #background000
-		exists: true.
-	self cssClass removeSelector: #background000.
-	self waitForCompile: scripter.
-	self
-		check: scripter
-		selector: #background000
-		exists: false.
+		assert: (environment anyDummyClass realClass selectors includes: #background111) not.
+
 	^ scripter
 ]
 
