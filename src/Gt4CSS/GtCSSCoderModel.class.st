@@ -268,6 +268,17 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 		action: [ :aCoderUIModel :anElement | aCoderUIModel save ]
 		id: GtMethodCoderSaveActionId.
 	addOns
+		addDropDownWithPreviewAction: 'Remove' translated
+		icon: BrGlamorousVectorIcons remove
+		action: [ :aButtonElement :aButtonModel :anEvent | self remove ]
+		stencil: [ :element | 
+			GtPharoRemoveMethodPreviewStencil new
+				selectorToRemove: self selector;
+				isEmptyMethod: self isNewMethod;
+				anElement: element;
+				create ]
+		id: GtMethodCoderRemoveActionId.
+	addOns
 		addMainAction: 'Inspect Method' translated
 		icon: BrGlamorousVectorIcons inspect
 		action: [ :aCoderUIModel :anElement | 
@@ -453,6 +464,12 @@ GtCSSCoderModel >> rbAST [
 	^ [ self newRbAST: self methodSource ]
 		on: Error
 		do: [ :ex | ex return: nil ]
+]
+
+{ #category : #initialization }
+GtCSSCoderModel >> remove [
+	self methodBehavior
+		realBehaviorDo: [ :aBehavior | GtPharoCodeModifier current removeMethodFrom: aBehavior selector: self selector ]
 ]
 
 { #category : #'as yet unclassified' }
