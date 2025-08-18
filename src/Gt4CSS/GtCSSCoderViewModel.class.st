@@ -48,6 +48,16 @@ GtCSSCoderViewModel >> isMeta [
 	^ self coderModel isMeta
 ]
 
+{ #category : #'as yet unclassified' }
+GtCSSCoderViewModel >> parentCoderViewModel: aCoderViewModel [
+	self optionAt: #parentCoderViewModel put: aCoderViewModel asWeakReference
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderViewModel >> parentExample: anExample [
+	self optionAt: #parentExample put: anExample asWeakReference
+]
+
 { #category : #accessing }
 GtCSSCoderViewModel >> preventSaveDueTo: anObject [
 ]
