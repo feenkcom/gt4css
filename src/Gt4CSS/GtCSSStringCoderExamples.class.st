@@ -57,7 +57,10 @@ GtCSSStringCoderExamples >> changeProtocol [
 			s
 				label: 'Complete name';
 				key: BlKeyboardKey return ].
-	self assert: (environment anyDummyClass realClass >> #background111) protocol equals: 'foo'.
+	self 
+		assert: (environment anyDummyClass realClass >> #background111) protocolName 
+		equals: 'foo'.
+		
 	^ scripter
 ]
 

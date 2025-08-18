@@ -453,6 +453,11 @@ GtCSSCoderModel >> protocol: aSymbol [
 				yourself)
 ]
 
+{ #category : #accessing }
+GtCSSCoderModel >> protocolName [
+	^ (self methodBehavior behavior methodNamed: self selector) protocolName
+]
+
 { #category : #'as yet unclassified' }
 GtCSSCoderModel >> rbAST [
 	| source |
@@ -480,7 +485,7 @@ GtCSSCoderModel >> renameProtocol: aString [
 		ifTrue: [ change := RBMethodProtocolChange
 				selector: selector
 				in: self behavior
-				classified: self protocol.
+				classified: self protocolName.
 			change execute ]
 ]
 
