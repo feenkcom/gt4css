@@ -114,6 +114,29 @@ GtCSSStringCoderExamples >> cssClass [
 ]
 
 { #category : #'as yet unclassified' }
+GtCSSStringCoderExamples >> cssMethodCoder [
+	<gtExample>
+	| scripter |
+	self generateClassWithCSS.
+	scripter := self
+			scripterInPagerForBlock: [ GtCoderElement forClass: self cssClass ].
+	scripter
+		doStep: [ :s | 
+			s
+				label: 'Set space extent';
+				block: [ :aSpace | aSpace extent: 2400 @ 1000 ];
+				onSpace ].
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Click Methods tab';
+				// #tabbar;
+				// BlTextElement;
+				@ [ :each | each text asString = 'Methods' ] ].
+	^ scripter
+]
+
+{ #category : #'as yet unclassified' }
 GtCSSStringCoderExamples >> cssSourceForIndex: i [
 	^ '.background<1s> {
 	background: #<1s>;
@@ -160,6 +183,40 @@ GtCSSStringCoderExamples >> expandCSSItem [
 ]
 
 { #category : #'as yet unclassified' }
+GtCSSStringCoderExamples >> expandInlineCSSCoder [
+	<gtExample>
+	| scripter |
+	scripter := self expandNormalMethod.
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Click Method Expander';
+				// BrInlineExpanderElement ];
+		assertStep: [ :s | 
+			s
+				label: 'Check for CSS Coder in expansion';
+				// GtExpandableSourceCoderElement;
+				// GtCSSExpandableSourceCoderElement;
+				exists ].
+	^ scripter
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSStringCoderExamples >> expandNormalMethod [
+	<gtExample>
+	| scripter |
+	scripter := self cssMethodCoder.
+	scripter
+		clickStep: [ :s | 
+			s
+				label: 'Click Normal Method';
+				// GtExpandableSourceCoderElement;
+				// BlAttributedTextElement;
+				@ [ :each | each text asString = 'nonCSSmethod' ] ].
+	^ scripter
+]
+
+{ #category : #'as yet unclassified' }
 GtCSSStringCoderExamples >> generateClassWithCSS [
 	<gtExample>
 	<after: #cleanUp>
@@ -172,7 +229,10 @@ GtCSSStringCoderExamples >> generateClassWithCSS [
 	cls := self cssClass.
 	0
 		to: 15
-		do: [ :i | cls compile: (self sourceForIndex: i) classified: #'css string' ]
+		do: [ :i | cls compile: (self sourceForIndex: i) classified: #'css string' ].
+	cls compile: 
+'nonCSSmethod
+	self background000' classified: #'normal method'
 ]
 
 { #category : #'examples - scripter' }
