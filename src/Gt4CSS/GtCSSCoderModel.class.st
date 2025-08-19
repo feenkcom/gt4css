@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+GtCSSCoderModel class >> forMethod: aCompiledMethod [
+	^ self new forMethod: aCompiledMethod
+]
+
+{ #category : #'instance creation' }
 GtCSSCoderModel class >> forMethod: aCompiledMethod in: behavior [
 	^ self new forMethod: aCompiledMethod
 ]
@@ -190,6 +195,11 @@ GtCSSCoderModel >> currentSelectorPromise [
 { #category : #accessing }
 GtCSSCoderModel >> example [
 	^nil
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> explicitProviderClass: aClass [
+	self attributeNamed: #providerClass put: aClass 
 ]
 
 { #category : #'instance creation' }
