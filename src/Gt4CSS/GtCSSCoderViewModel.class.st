@@ -1,8 +1,8 @@
 Class {
 	#name : #GtCSSCoderViewModel,
 	#superclass : #GtSourceCoderViewModel,
-	#traits : 'TGtCoderWithSelfObjectHolder',
-	#classTraits : 'TGtCoderWithSelfObjectHolder classTrait',
+	#traits : 'TGtCoderWithSelfObjectHolder + TGtCoderViewModelWithParentProperties',
+	#classTraits : 'TGtCoderWithSelfObjectHolder classTrait + TGtCoderViewModelWithParentProperties classTrait',
 	#category : #'Gt4CSS-Model'
 }
 
@@ -46,16 +46,6 @@ GtCSSCoderViewModel >> isMeta [
 
 	<return: #Boolean>
 	^ self coderModel isMeta
-]
-
-{ #category : #'as yet unclassified' }
-GtCSSCoderViewModel >> parentCoderViewModel: aCoderViewModel [
-	self optionAt: #parentCoderViewModel put: aCoderViewModel asWeakReference
-]
-
-{ #category : #'as yet unclassified' }
-GtCSSCoderViewModel >> parentExample: anExample [
-	self optionAt: #parentExample put: anExample asWeakReference
 ]
 
 { #category : #accessing }
