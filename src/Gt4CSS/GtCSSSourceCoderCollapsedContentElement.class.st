@@ -11,6 +11,5 @@ GtCSSSourceCoderCollapsedContentElement >> showPackageAndClass: aBoolean [
 
 { #category : #'as yet unclassified' }
 GtCSSSourceCoderCollapsedContentElement >> updateCollapsedTextLabel [
-	GtJustContextStackSignal emit.
 	label asyncPromise promise: textualCoderViewModel collapsedTextPromise
 ]
