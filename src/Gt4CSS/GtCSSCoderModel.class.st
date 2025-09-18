@@ -303,7 +303,8 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 GtCSSCoderModel >> initializeShortcuts: addOns [
 	super initializeShortcuts: addOns.
 
-	addOns addShortcut: GtSourceCoderSaveShortcut new
+	addOns addShortcut: GtSourceCoderSaveShortcut new.
+	addOns addShortcut: GtSourceCoderDiscardChangesShortcut new.
 ]
 
 { #category : #testing }
