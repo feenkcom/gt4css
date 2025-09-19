@@ -4,6 +4,47 @@ Class {
 	#category : #'Gt4CSS-Examples'
 }
 
+{ #category : #'css strings' }
+GtCSSFileSamples class >> lepiter_snippet_legacy [
+	<cssString>
+	^ '
+
+/*
+    LEGACY CODE for a backward compatibility reasons
+ */
+
+.method_annotation {
+    font-family: "Source Code Pro", monospace;
+    background-color: #F0F0F0;
+}
+
+.hidden_annotation .method_definition {
+    display: none;
+}
+
+.visible_annotation .method_definition {
+    display: block;
+}
+
+.method_definition {
+    font-family: "Source Code Pro", monospace;
+    white-space: pre;
+    background-color: #F8F8F8;
+}
+
+.hidden_annotation>.method_definition {
+    display: none;
+}
+
+.visible_annotation>.method_definition {
+    display: block;
+}
+
+/*
+    End of LEGACY CODE
+ */'
+]
+
 { #category : #examples }
 GtCSSFileSamples >> cssDefinitionFromCSSString [
 	<gtExample>
@@ -914,42 +955,6 @@ figcaption {
 .no_bottom_margin {
     margin-bottom: 0;
 }
-
-
-/*
-    LEGACY CODE for a backward compatibility reasons
- */
-
-.method_annotation {
-    font-family: "Source Code Pro", monospace;
-    background-color: #F0F0F0;
-}
-
-.hidden_annotation .method_definition {
-    display: none;
-}
-
-.visible_annotation .method_definition {
-    display: block;
-}
-
-.method_definition {
-    font-family: "Source Code Pro", monospace;
-    white-space: pre;
-    background-color: #F8F8F8;
-}
-
-.hidden_annotation>.method_definition {
-    display: none;
-}
-
-.visible_annotation>.method_definition {
-    display: block;
-}
-
-/*
-    End of LEGACY CODE
- */
 '
 ]
 
