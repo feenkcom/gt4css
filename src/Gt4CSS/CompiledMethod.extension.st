@@ -13,6 +13,7 @@ CompiledMethod >> gtCSSStringFor: aView [
 		ifFalse: [ ^ aView empty ].
 	^ aView forward
 		title: 'CSS';
+		priority: 2;
 		object: [ GtCSSCoderModel new forMethod: self ];
 		view: #gtLiveFor:context:
 ]
