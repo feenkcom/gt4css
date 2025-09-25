@@ -21,6 +21,7 @@ GtCSSCoderModel class >> forMethod: aCompiledMethod in: behavior [
 { #category : #adding }
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns: 10>
+	<gtCoderContextMenuAddOns>
 	| allSelections allCursors node interval group |
 	group := BrMenuItemGroupConfiguration new
 			name: 'CSS';
@@ -45,8 +46,8 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 						hover: nil
 						leave: nil
 						action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringPropertyReferences ]
-						id: #'context-menu--css-property-reference') 
-							ifNotNil: [ :anAction | anAction priority: 10.1 ] ].
+						id: #'context-menu--css-property-reference')
+						ifNotNil: [ :anAction | anAction priority: 10.1 ] ].
 			^ self ].
 
 	((node isKindOf: CSSIdentifierNode)
@@ -68,7 +69,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 						sourceCoderViewModel: cvm;
 						originalNode: node) executeIn: element ]
 				id: #'context-menu--css-rename-selector')
-					ifNotNil: [ :anAction | anAction priority: 10.2 ].
+				ifNotNil: [ :anAction | anAction priority: 10.2 ].
 			(coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'References in methods'
@@ -78,7 +79,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				leave: nil
 				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSClassMethodReferences ]
 				id: #'context-menu--css-method-reference')
-					ifNotNil: [ :anAction | anAction priority: 10.3 ].
+				ifNotNil: [ :anAction | anAction priority: 10.3 ].
 			(coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'References in css'
@@ -88,7 +89,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				leave: nil
 				action: [ :aTextualViewModel :element | element phlow spawnObject: node name source gtCSSStringSelectorReferences ]
 				id: #'context-menu--css-string-reference')
-					ifNotNil: [ :anAction | anAction priority: 10.4 ].
+				ifNotNil: [ :anAction | anAction priority: 10.4 ].
 			^ self ].
 
 	(node isKindOf: CSSDelimiterNode) ifTrue: [ node := node parent ].
@@ -112,7 +113,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 									((GtCSSStringSplitRulesetRefactoringController new sourceCoderViewModel: cvm)
 										position: each startPosition) executeIn: element ]
 								id: #'context-menu--css-split-ruleset')
-									ifNotNil: [ :anAction | anAction priority: 10.5 ] ] ] ]
+								ifNotNil: [ :anAction | anAction priority: 10.5 ] ] ] ]
 ]
 
 { #category : #converting }

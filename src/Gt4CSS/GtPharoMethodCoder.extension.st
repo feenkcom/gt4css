@@ -3,6 +3,7 @@ Extension { #name : #GtPharoMethodCoder }
 { #category : #'*Gt4CSS' }
 GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns: 300>
+	<gtCoderContextMenuAddOns>
 	(self extractableNodesFrom: aCoderViewModel)
 		ifNotEmpty: [ :nodes | 
 			| node index |
@@ -27,7 +28,7 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 						sourceCoderViewModel: cvm;
 						originalNode: node) execute ]
 				id: #'context-menu--css-rename-selector')
-					ifNotNil: [ :anAction | anAction priority: 300.1 ].
+				ifNotNil: [ :anAction | anAction priority: 300.1 ].
 			(coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'Browse CSS definitions'
@@ -39,5 +40,5 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 				leave: self removeHighlightBlock
 				action: [ :cvm :element | element phlow spawnObject: node literalValue gtCSSStringSelectorReferences ]
 				id: #'context-menu--css-style')
-					ifNotNil: [ :anAction | anAction priority: 300.2 ] ]
+				ifNotNil: [ :anAction | anAction priority: 300.2 ] ]
 ]
