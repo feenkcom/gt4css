@@ -3,6 +3,7 @@ Extension { #name : #GtPharoMethodCoder }
 { #category : #'*Gt4CSS' }
 GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns: 300>
+	<gtCoderContextMenuAddOns>
 	(self extractableNodesFrom: aCoderViewModel)
 		ifNotEmpty: [ :nodes | 
 			| node index |
@@ -13,7 +14,7 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 			index := node parent arguments identityIndexOf: node.
 			index = 0 ifTrue: [ ^ self ].
 			(node parent selectorParts at: index) source = 'style:' ifFalse: [ ^ self ].
-			coderAddOns
+			(coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'Rename CSS class'
 						description: node literalValue)
@@ -26,8 +27,9 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 					(GtCSSStringRenameSelectorController new
 						sourceCoderViewModel: cvm;
 						originalNode: node) execute ]
-				id: #'context-menu--css-rename-selector'.
-			coderAddOns
+				id: #'context-menu--css-rename-selector')
+				ifNotNil: [ :anAction | anAction priority: 300.1 ].
+			(coderAddOns
 				addContextMenuItem: (self
 						createLabel: 'Browse CSS definitions'
 						description: node literalValue)
@@ -37,5 +39,6 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 				hover: (self highlightNodesBlock: nodes)
 				leave: self removeHighlightBlock
 				action: [ :cvm :element | element phlow spawnObject: node literalValue gtCSSStringSelectorReferences ]
-				id: #'context-menu--css-style' ]
+				id: #'context-menu--css-style')
+				ifNotNil: [ :anAction | anAction priority: 300.2 ] ]
 ]
