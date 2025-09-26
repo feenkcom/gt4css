@@ -2,7 +2,6 @@ Extension { #name : #GtPharoMethodCoder }
 
 { #category : #'*Gt4CSS' }
 GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderViewModel [
-	<gtCoderContextMenuAddOns: 300>
 	<gtCoderContextMenuAddOns>
 	(self extractableNodesFrom: aCoderViewModel)
 		ifNotEmpty: [ :nodes | 
