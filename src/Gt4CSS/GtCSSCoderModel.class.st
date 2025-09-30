@@ -21,6 +21,7 @@ GtCSSCoderModel class >> forMethod: aCompiledMethod in: behavior [
 { #category : #adding }
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns>
+	<gtCoderContextMenuAddOns: 10.1d0>
 	| allSelections allCursors node interval group |
 	group := BrMenuItemGroupConfiguration new
 			name: 'CSS';
