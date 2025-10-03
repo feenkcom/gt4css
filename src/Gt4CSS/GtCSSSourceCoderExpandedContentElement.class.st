@@ -58,7 +58,6 @@ GtCSSSourceCoderExpandedContentElement >> lspModel: anObject [
 GtCSSSourceCoderExpandedContentElement >> newEditorElement [
 	| editor |
 	editor := GtCSSSourceCoderEditorElement new.
-	self updateAptitude: editor.
 	editor editor
 		when: BrTextEditorInsertedEvent
 			do: [ :event | self editorChangedTo: event source text asString ];
@@ -85,6 +84,8 @@ GtCSSSourceCoderExpandedContentElement >> updateAptitude: editor [
 	| aptitude |
 	aptitude := GtLSPEditorAptitude new.
 	aptitude lspFile: self lspFile.
+	textualCoderViewModel ifNotNil: [
+		aptitude styler: textualCoderViewModel compositeStyler ].
 	editor aptitude: aptitude.
 	textualCoderViewModel ifNotNil: [label text: textualCoderViewModel coder selector asRopedText].
 	editor

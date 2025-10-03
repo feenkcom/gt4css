@@ -285,7 +285,7 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 		id: GtMethodCoderSaveActionId.
 	addOns
 		addDropDownWithPreviewAction: 'Remove' translated
-		icon: BrGlamorousVectorIcons remove
+		icon: BrGlamorousVectorIcons bin
 		action: [ :aButtonElement :aButtonModel :anEvent | self remove ]
 		stencil: [ :element | 
 			GtPharoRemoveMethodPreviewStencil new
