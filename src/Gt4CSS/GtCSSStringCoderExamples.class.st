@@ -164,6 +164,14 @@ GtCSSStringCoderExamples >> cssStringCoder [
 				// #tabbar;
 				// BlTextElement;
 				@ [ :each | each text asString = 'CSS strings' ] ].
+				
+	scripter assert
+		label: 'Assert protocol label is css string';
+		value: [ :anElement | anElement label asString ] equals: 'css string';
+		// (GtSourceCoderId indexed: 1);
+		// GtPharoProtocolTagId;
+		play.
+				
 	^ scripter
 ]
 
@@ -232,7 +240,9 @@ GtCSSStringCoderExamples >> generateClassWithCSS [
 		do: [ :i | cls compile: (self sourceForIndex: i) classified: #'css string' ].
 	cls compile: 
 'nonCSSmethod
-	self background000' classified: #'normal method'
+	self background000' classified: #'normal method'.
+	
+	^ cls
 ]
 
 { #category : #'examples - scripter' }
