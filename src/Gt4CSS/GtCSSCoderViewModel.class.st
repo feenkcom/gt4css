@@ -1,8 +1,8 @@
 Class {
 	#name : #GtCSSCoderViewModel,
 	#superclass : #GtSourceCoderViewModel,
-	#traits : 'TGtCoderWithSelfObjectHolder + TGtCoderViewModelWithParentProperties',
-	#classTraits : 'TGtCoderWithSelfObjectHolder classTrait + TGtCoderViewModelWithParentProperties classTrait',
+	#traits : 'TGtPhlowWithSelfObjectHolder + TGtCoderViewModelWithParentProperties',
+	#classTraits : 'TGtPhlowWithSelfObjectHolder classTrait + TGtCoderViewModelWithParentProperties classTrait',
 	#category : #'Gt4CSS-Model'
 }
 
