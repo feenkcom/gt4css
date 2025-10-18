@@ -1,6 +1,6 @@
 {
 	"repositories" : {
-		"github://feenkcom/gt4lsp/src" : "v0.6.910",
-		"github://feenkcom/gtoolkit-coder/src" : "v0.8.2346"
+		"github://feenkcom/gt4lsp/src" : "v0.6.911",
+		"github://feenkcom/gtoolkit-coder/src" : "v0.8.2347"
 	}
 }
