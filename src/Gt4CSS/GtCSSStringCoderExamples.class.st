@@ -108,7 +108,7 @@ GtCSSStringCoderExamples >> cleanUp [
 	environment ifNotNil: [ :anEnvironment | anEnvironment removeFromSystem ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples - environment' }
 GtCSSStringCoderExamples >> cssClass [
 	^ environment anyDummyRootClass realClass
 ]
@@ -120,6 +120,7 @@ GtCSSStringCoderExamples >> cssMethodCoder [
 	self generateClassWithCSS.
 	scripter := self
 			scripterInPagerForBlock: [ GtCoderElement forClass: self cssClass ].
+	scripter userData at: #environment put: self environment.
 	scripter
 		doStep: [ :s | 
 			s
@@ -151,6 +152,7 @@ GtCSSStringCoderExamples >> cssStringCoder [
 	self generateClassWithCSS.
 	scripter := self
 			scripterInPagerForBlock: [ GtCoderElement forClass: self cssClass ].
+	scripter userData at: #environment put: self environment.
 	scripter
 		doStep: [ :s | 
 			s
@@ -164,15 +166,25 @@ GtCSSStringCoderExamples >> cssStringCoder [
 				// #tabbar;
 				// BlTextElement;
 				@ [ :each | each text asString = 'CSS strings' ] ].
-				
+
 	scripter assert
 		label: 'Assert protocol label is css string';
 		value: [ :anElement | anElement label asString ] equals: 'css string';
 		// (GtSourceCoderId indexed: 1);
 		// GtPharoProtocolTagId;
 		play.
-				
+
 	^ scripter
+]
+
+{ #category : #'examples - environment' }
+GtCSSStringCoderExamples >> environment [
+	^ environment
+		ifNil: [ environment := GtPharoDummiesGenerator new
+					amountOfPackages: 1;
+					amountOfClasses: 1;
+					amountOfMethods: 0;
+					generate ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -227,21 +239,17 @@ GtCSSStringCoderExamples >> expandNormalMethod [
 { #category : #'as yet unclassified' }
 GtCSSStringCoderExamples >> generateClassWithCSS [
 	<gtExample>
-	<after: #cleanUp>
 	| cls |
-	environment := GtPharoDummiesGenerator new
-			amountOfPackages: 1;
-			amountOfClasses: 1;
-			amountOfMethods: 0;
-			generate.
+	self environment.
 	cls := self cssClass.
 	0
 		to: 15
 		do: [ :i | cls compile: (self sourceForIndex: i) classified: #'css string' ].
-	cls compile: 
-'nonCSSmethod
-	self background000' classified: #'normal method'.
-	
+	cls
+		compile: 'nonCSSmethod
+	self background000'
+		classified: #'normal method'.
+
 	^ cls
 ]
 
@@ -299,8 +307,39 @@ GtCSSStringCoderExamples >> methodUpdatedFromOutsideCoder [
 	<gtExample>
 	| scripter newSource methodSource |
 	scripter := self updatingMethod.
-	self cssClass compile: (self sourceForIndex: 1) classified: #'css string'.
-	self waitForCompile: scripter.
+	scripter do
+		label: 'Compile method';
+		block: [ :anElement | 
+			| aPromise |
+			aPromise := [ self cssClass
+					compile: (self sourceForIndex: 1)
+					classified: #'css string' ] asAsyncFuture
+					await: GtRefactoringsConstants futureExecutionConfiguration.
+			anElement enqueueTask: (BlPromiseTask new promise: aPromise) ];
+		play.
+	newSource := self sourceForIndex: 1.
+	newSource replaceAll: Character lf with: Character cr.
+	methodSource := environment anyDummyRootClass realClass
+			sourceCodeAt: #background111.
+	methodSource replaceAll: Character lf with: Character cr.
+	self assert: methodSource equals: newSource.
+	scripter
+		assertStep: [ :s | 
+			s
+				// GtSourceCoderEditorId;
+				value: [ :each | each text asString ] equals: (self cssSourceForIndex: 1) ].
+	^ scripter
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSStringCoderExamples >> methodUpdatedFromOutsideCoder_fromUIProcess [
+	<gtExample>
+	| scripter newSource methodSource |
+	scripter := self updatingMethod.
+	scripter do
+		label: 'Compile method';
+		block: [ self cssClass compile: (self sourceForIndex: 1) classified: #'css string' ];
+		play.
 	newSource := self sourceForIndex: 1.
 	newSource replaceAll: Character lf with: Character cr.
 	methodSource := environment anyDummyRootClass realClass
