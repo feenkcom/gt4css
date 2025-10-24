@@ -1,7 +1,7 @@
 Class {
 	#name : #GtAsyncCSSStringTypedGroupStream,
 	#superclass : #GtAsyncSearchTypedGroupStream,
-	#category : #'Gt4CSS-Filter'
+	#category : 'Gt4CSS-Filter'
 }
 
 { #category : #'gt - extensions' }

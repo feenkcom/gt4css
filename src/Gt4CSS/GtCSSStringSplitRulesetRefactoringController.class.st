@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'position'
 	],
-	#category : #'Gt4CSS-Refactorings'
+	#category : 'Gt4CSS-Refactorings'
 }
 
 { #category : #'as yet unclassified' }

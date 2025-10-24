@@ -5,7 +5,7 @@ Class {
 		'oldName',
 		'newName'
 	],
-	#category : #'Gt4CSS-Refactorings'
+	#category : 'Gt4CSS-Refactorings'
 }
 
 { #category : #'instance creation' }
