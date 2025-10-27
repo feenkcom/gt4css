@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'string'
 	],
-	#category : #'Gt4CSS-Filter'
+	#category : 'Gt4CSS-Filter'
 }
 
 { #category : #'as yet unclassified' }
@@ -27,7 +27,7 @@ GtCSSStringReferencesFilter >> includesMethod: aCompiledMethod [
 			ifTrue: [ aCompiledMethod methodClass new ]
 			ifFalse: [ aCompiledMethod methodClass instanceSide ])
 			perform: aCompiledMethod selector ] on: Error do: [ :ex | ex return: '' ].
-	(css includesSubstring: string) ifFalse: [ ^ false ].
+	(css asString includesSubstring: string) ifFalse: [ ^ false ].
 	ast := CSSParser parseWithErrors: css.
 	^ self matchesAST: ast
 ]
