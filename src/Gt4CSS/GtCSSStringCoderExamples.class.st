@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'environment'
 	],
-	#category : 'Gt4CSS-Examples'
+	#category : #'Gt4CSS-Examples'
 }
 
 { #category : #'as yet unclassified' }
@@ -281,12 +281,12 @@ GtCSSStringCoderExamples >> highlighter [
 		clickStep: [ :s | 
 			s
 				label: 'Expand coder';
-				id: GtPagerPageElementId index: 2;
+				onPagerPaneWithIndex: 2;
 				on: GtCSSSourceCoderCollapsedContentElement index: 1 ].
 	scripter
 		doStep: [ :s | 
 			s
-				id: GtPagerPageElementId index: 2;
+				onPagerPaneWithIndex: 2;
 				// GtSourceCoderEditorId;
 				block: [ :each | 
 					| found |
