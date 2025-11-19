@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSFilteredCodersModel,
 	#superclass : #GtFilteredCodersModel,
-	#category : 'Gt4CSS-Model'
+	#category : #'Gt4CSS-Model'
 }
 
 { #category : #'as yet unclassified' }

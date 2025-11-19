@@ -3,11 +3,20 @@ Class {
 	#superclass : #GtSourceCoderViewModel,
 	#traits : 'TGtPhlowWithSelfObjectHolder + TGtCoderViewModelWithParentProperties',
 	#classTraits : 'TGtPhlowWithSelfObjectHolder classTrait + TGtCoderViewModelWithParentProperties classTrait',
-	#category : 'Gt4CSS-Model'
+	#category : #'Gt4CSS-Model'
 }
 
 { #category : #'api - actions' }
 GtCSSCoderViewModel >> allowSaveDueTo: anObject [ 
+]
+
+{ #category : #converting }
+GtCSSCoderViewModel >> asExpandedOnlyElement [
+	"Create an element for just the expanded coder without expander"
+ 
+	^ GtCSSSourceCoderExpandedOnlyElement new
+		textualCoderViewModel: self asCoderViewModel;
+		yourself
 ]
 
 { #category : #accessing }
