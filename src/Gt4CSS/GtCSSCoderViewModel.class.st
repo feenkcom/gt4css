@@ -10,6 +10,15 @@ Class {
 GtCSSCoderViewModel >> allowSaveDueTo: anObject [ 
 ]
 
+{ #category : #converting }
+GtCSSCoderViewModel >> asExpandedOnlyElement [
+	"Create an element for just the expanded coder without expander"
+ 
+	^ GtCSSSourceCoderExpandedOnlyElement new
+		textualCoderViewModel: self asCoderViewModel;
+		yourself
+]
+
 { #category : #accessing }
 GtCSSCoderViewModel >> behavior [
 	^ self coderModel behavior
