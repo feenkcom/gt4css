@@ -97,5 +97,5 @@ GtCSSCoderHeaderElement >> spawnBehavior [
 
 { #category : #menu }
 GtCSSCoderHeaderElement >> spawnPackage [
-	self phlow spawnTool: (GtPackageCoderTool package: self package)
+	self phlow spawnTool: (GtPackageCoderTool forPackage: self package)
 ]
