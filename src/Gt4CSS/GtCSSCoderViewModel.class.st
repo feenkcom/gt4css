@@ -29,6 +29,11 @@ GtCSSCoderViewModel >> collapsedTextPromise [
 	^ self currentSelectorPromise then: [ :aSelector | aSelector asRopedText ]
 ]
 
+{ #category : #accessing }
+GtCSSCoderViewModel >> compiledMethod [
+	^self coderModel compiledMethod
+]
+
 { #category : #'as yet unclassified' }
 GtCSSCoderViewModel >> currentSelectorPromise [
 	^ self coderModel currentSelectorPromise
