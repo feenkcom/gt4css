@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSFileSamples,
 	#superclass : #Object,
-	#category : #'Gt4CSS-Examples'
+	#category : 'Gt4CSS-Examples'
 }
 
 { #category : #'css strings' }

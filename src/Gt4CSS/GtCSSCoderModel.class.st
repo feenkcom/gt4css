@@ -5,7 +5,7 @@ Class {
 		'methodBehavior',
 		'selector'
 	],
-	#category : #'Gt4CSS-Model'
+	#category : 'Gt4CSS-Model'
 }
 
 { #category : #'instance creation' }
