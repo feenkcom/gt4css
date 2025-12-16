@@ -981,6 +981,31 @@ GtCSSFileSamples >> renameCSSSelector [
 	^ model
 ]
 
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSString [
+	<gtExample>
+	| ast visitor |
+	ast := CSSParser parseWithErrors: self lepiter_common.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	^visitor contents
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSString2 [
+	<gtExample>
+	| ast visitor |
+	ast := CSSParser parseWithErrors: '@media only screen and (max-width : 768px) {
+	.product-pricing .pricing {
+		border-top: 1px solid #dcdcdc;
+		border-left: none;
+	}
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	^visitor contents
+]
+
 { #category : #'sample methods' }
 GtCSSFileSamples >> writeOn: aStream [
 	aStream

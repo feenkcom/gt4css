@@ -21,6 +21,48 @@ CSSPrettyPrinterVisitor >> initialize [
 ]
 
 { #category : #generated }
+CSSPrettyPrinterVisitor >> visitAt: anAt [
+	stream nextPutAll: anAt name value
+]
+
+{ #category : #generated }
+CSSPrettyPrinterVisitor >> visitAtRule: anAtRule [
+	self accept: anAtRule atKeyword.
+	anAtRule parts do: [:e | self accept: e] separatedBy: [stream space].
+	stream nextPutAll: ' '.
+	self accept: anAtRule block.
+	anAtRule semicolon ifNotNil: [self error: 'not yet implemented']
+]
+
+{ #category : #generated }
+CSSPrettyPrinterVisitor >> visitBlock: aBlock [
+	stream
+		nextPutAll: '{';
+		cr;
+		tab.
+	aBlock items do: 
+			[:e |
+			| end start isNewLine |
+			end := e nodeAfter ifNil: [] ifNotNil: [:after | after startPosition].
+			start := e stopPosition.
+			isNewLine := end notNil and: 
+							[aBlock semicolons
+								anySatisfy: [:semicolon | semicolon startPosition between: start and: end]].
+			self accept: e.
+			(isNewLine not and: [end notNil and: [end - start > 1]])
+				ifTrue: [stream space].
+			isNewLine
+				ifTrue: 
+					[stream nextPutAll: ';'.
+					stream
+						cr;
+						tab]].
+	stream
+		nextPutAll: '}';
+		cr
+]
+
+{ #category : #generated }
 CSSPrettyPrinterVisitor >> visitDeclaration: aDeclaration [
 	stream
 		tab;
@@ -63,6 +105,13 @@ CSSPrettyPrinterVisitor >> visitNumber: aNumber [
 ]
 
 { #category : #generated }
+CSSPrettyPrinterVisitor >> visitParenthesizedExpression: aParenthesizedExpression [
+	stream nextPutAll: ' ('.
+	self accept: aParenthesizedExpression items.
+	stream nextPutAll: ')'
+]
+
+{ #category : #generated }
 CSSPrettyPrinterVisitor >> visitPercentage: aPercentage [
 	stream nextPutAll: aPercentage value value
 ]
@@ -89,4 +138,14 @@ CSSPrettyPrinterVisitor >> visitRuleset: aRuleset [
 	stream
 		nextPutAll: '}';
 		cr
+]
+
+{ #category : #generated }
+CSSPrettyPrinterVisitor >> visitString: aString [
+	stream nextPutAll: aString value value
+]
+
+{ #category : #generated }
+CSSPrettyPrinterVisitor >> visitURI: anURI [
+	stream nextPutAll: anURI value value
 ]
