@@ -87,7 +87,12 @@ GtCSSSourceCoderExpandedContentElement >> updateAptitude: editor [
 	textualCoderViewModel ifNotNil: [
 		aptitude styler: textualCoderViewModel compositeStyler ].
 	editor aptitude: aptitude.
-	textualCoderViewModel ifNotNil: [label text: textualCoderViewModel coder selector asRopedText].
+	textualCoderViewModel ifNotNil: [self updateHeaderLabel].
 	editor
 		addAptitude: (BrGlamorousWithExplicitContextMenuAptitude menu: [ editor createContextMenu ])
+]
+
+{ #category : #updating }
+GtCSSSourceCoderExpandedContentElement >> updateHeaderLabel [
+	label text: textualCoderViewModel coder selector asRopedText.
 ]
