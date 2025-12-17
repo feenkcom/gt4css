@@ -42,11 +42,6 @@ CSSPrettyPrinterVisitor >> initialize [
 ]
 
 { #category : #generated }
-CSSPrettyPrinterVisitor >> visitAt: anAt [
-	stream nextPutAll: anAt name value
-]
-
-{ #category : #generated }
 CSSPrettyPrinterVisitor >> visitAtRule: anAtRule [
 	self accept: anAtRule atKeyword.
 	stream nextPutAll: ' '.
@@ -140,13 +135,8 @@ CSSPrettyPrinterVisitor >> visitFunction: aFunction [
 ]
 
 { #category : #generated }
-CSSPrettyPrinterVisitor >> visitHash: aHash [
-	stream nextPutAll: aHash name value
-]
-
-{ #category : #generated }
-CSSPrettyPrinterVisitor >> visitIdentifier: anIdentifier [
-	stream nextPutAll: anIdentifier name value
+CSSPrettyPrinterVisitor >> visitName: aName [
+	stream nextPutAll: aName name value
 ]
 
 { #category : #generated }
