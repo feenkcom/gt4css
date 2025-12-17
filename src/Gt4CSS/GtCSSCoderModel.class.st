@@ -221,6 +221,20 @@ GtCSSCoderModel >> forMethod: aCompiledMethod [
 	self sourceCode: (GtCoderExplicitStringSource new source: source)
 ]
 
+{ #category : #formatting }
+GtCSSCoderModel >> format [
+	self formatWithRequesterObject: nil
+]
+
+{ #category : #formatting }
+GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
+	| ast visitor |
+	ast := self astSync.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	self currentSourceString: visitor contents
+]
+
 { #category : #ui }
 GtCSSCoderModel >> gtLiveFor: aView [
 	<gtView>
@@ -308,9 +322,9 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 { #category : #initialization }
 GtCSSCoderModel >> initializeShortcuts: addOns [
 	super initializeShortcuts: addOns.
-
 	addOns addShortcut: GtSourceCoderSaveShortcut new.
 	addOns addShortcut: GtSourceCoderDiscardChangesShortcut new.
+	addOns addShortcut: GtSourceCoderFormatShortcut new
 ]
 
 { #category : #testing }
