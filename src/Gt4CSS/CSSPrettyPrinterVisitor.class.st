@@ -187,6 +187,11 @@ CSSPrettyPrinterVisitor >> visitRuleset: aRuleset [
 	indent := indent - 1
 ]
 
+{ #category : #visiting }
+CSSPrettyPrinterVisitor >> visitSmaCCError: aSmaCCError [
+	stream nextPutAll: aSmaCCError source
+]
+
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitString: aString [
 	stream nextPutAll: aString value value

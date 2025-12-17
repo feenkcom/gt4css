@@ -209,6 +209,11 @@ GtCSSCoderModel >> explicitProviderClass: aClass [
 ]
 
 { #category : #formatting }
+GtCSSCoderModel >> format [
+	self formatWithRequesterObject: nil
+]
+
+{ #category : #formatting }
 GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
 	| ast visitor |
 	ast := self astSync.
