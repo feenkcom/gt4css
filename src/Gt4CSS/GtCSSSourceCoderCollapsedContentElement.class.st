@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSSourceCoderCollapsedContentElement,
 	#superclass : #GtSourceCoderCollapsedContentElement,
-	#category : #'Gt4CSS-UI'
+	#category : 'Gt4CSS-UI'
 }
 
 { #category : #'as yet unclassified' }

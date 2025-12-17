@@ -5,7 +5,7 @@ Class {
 		'methodBehavior',
 		'selector'
 	],
-	#category : #'Gt4CSS-Model'
+	#category : 'Gt4CSS-Model'
 }
 
 { #category : #'instance creation' }
@@ -208,6 +208,20 @@ GtCSSCoderModel >> explicitProviderClass: aClass [
 	self attributeNamed: #providerClass put: aClass 
 ]
 
+{ #category : #formatting }
+GtCSSCoderModel >> format [
+	self formatWithRequesterObject: nil
+]
+
+{ #category : #formatting }
+GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
+	| ast visitor |
+	ast := self astSync.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	self currentSourceString: visitor contents
+]
+
 { #category : #'instance creation' }
 GtCSSCoderModel >> forMethod: aCompiledMethod [
 	| source |
@@ -308,9 +322,9 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 { #category : #initialization }
 GtCSSCoderModel >> initializeShortcuts: addOns [
 	super initializeShortcuts: addOns.
-
 	addOns addShortcut: GtSourceCoderSaveShortcut new.
 	addOns addShortcut: GtSourceCoderDiscardChangesShortcut new.
+	addOns addShortcut: GtSourceCoderFormatShortcut new
 ]
 
 { #category : #testing }

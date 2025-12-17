@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSStringSelectorHighlighter,
 	#superclass : #GtCSSStringHighlighter,
-	#category : #'Gt4CSS-Highlighter'
+	#category : 'Gt4CSS-Highlighter'
 }
 
 { #category : #generated }

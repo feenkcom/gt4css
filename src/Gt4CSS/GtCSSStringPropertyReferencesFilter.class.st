@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSStringPropertyReferencesFilter,
 	#superclass : #GtCSSStringReferencesFilter,
-	#category : #'Gt4CSS-Filter'
+	#category : 'Gt4CSS-Filter'
 }
 
 { #category : #'instance creation' }
