@@ -208,6 +208,15 @@ GtCSSCoderModel >> explicitProviderClass: aClass [
 	self attributeNamed: #providerClass put: aClass 
 ]
 
+{ #category : #formatting }
+GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
+	| ast visitor |
+	ast := self astSync.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	self currentSourceString: visitor contents
+]
+
 { #category : #'instance creation' }
 GtCSSCoderModel >> forMethod: aCompiledMethod [
 	| source |
@@ -308,9 +317,9 @@ GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewMo
 { #category : #initialization }
 GtCSSCoderModel >> initializeShortcuts: addOns [
 	super initializeShortcuts: addOns.
-
 	addOns addShortcut: GtSourceCoderSaveShortcut new.
 	addOns addShortcut: GtSourceCoderDiscardChangesShortcut new.
+	addOns addShortcut: GtSourceCoderFormatShortcut new
 ]
 
 { #category : #testing }

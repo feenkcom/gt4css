@@ -959,6 +959,36 @@ figcaption {
 ]
 
 { #category : #examples }
+GtCSSFileSamples >> prettyPrinterScripterOnCSSString [
+	<gtExample>
+	| method scripter |
+	method := self class >> #lepiter_common.
+	scripter := BlScripter new.
+	scripter substep: 'Show a coder'
+		do: 
+			[:aStep |
+			(aStep set)
+				label: 'Initialize Coder Model';
+				model: [GtCSSCoderModel new forMethod: method];
+				play.
+			(aStep set)
+				label: 'Initialize Coder UI';
+				element: [:aCoder | aCoder asElement];
+				onModel;
+				play].
+	scripter substep: 'Format Code'
+		do: 
+			[:aStep |
+			aStep shortcutStep: 
+					[:s |
+					s
+						label: 'Format coder';
+						combination: BlKeyCombination primaryShiftF;
+						// GtSourceCoderEditorId]].
+	^scripter
+]
+
+{ #category : #examples }
 GtCSSFileSamples >> renameCSSSelector [
 	<gtExample>
 	| model refactoring newName oldName |
