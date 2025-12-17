@@ -28,12 +28,12 @@ CSSPrettyPrinterVisitor >> acceptNode: aSmaCCParseNode [
 	^aSmaCCParseNode acceptVisitor: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #public }
 CSSPrettyPrinterVisitor >> contents [
 	^stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 CSSPrettyPrinterVisitor >> initialize [
 	super initialize.
 	stream := String new writeStream.
@@ -99,7 +99,6 @@ CSSPrettyPrinterVisitor >> visitBracketExpression: aBracketExpression [
 
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitCommentDelimiter: aCommentDelimiter [
-	self halt.
 	^self visitProgram: aCommentDelimiter
 ]
 
@@ -145,7 +144,7 @@ CSSPrettyPrinterVisitor >> visitHash: aHash [
 	stream nextPutAll: aHash name value
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generated }
 CSSPrettyPrinterVisitor >> visitIdentifier: anIdentifier [
 	stream nextPutAll: anIdentifier name value
 ]
@@ -157,7 +156,6 @@ CSSPrettyPrinterVisitor >> visitNumber: aNumber [
 
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitOperator: anOperator [
-	self halt.
 	^self visitProgram: anOperator
 ]
 
@@ -212,8 +210,7 @@ CSSPrettyPrinterVisitor >> visitStylesheet: aStylesheet [
 
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitUnicodeRange: anUnicodeRange [
-	self halt.
-	^self visitValue: anUnicodeRange
+	stream nextPutAll: anUnicodeRange value value
 ]
 
 { #category : #generated }
@@ -223,6 +220,5 @@ CSSPrettyPrinterVisitor >> visitURI: anURI [
 
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitValue: aValue [
-	self halt.
 	^self visitProgram: aValue
 ]

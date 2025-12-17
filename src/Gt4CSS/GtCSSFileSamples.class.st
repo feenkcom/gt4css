@@ -1159,6 +1159,29 @@ a {
 	^pretty
 ]
 
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringUnicodeRange [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '@font-face {
+  font-family: "Ampersand";
+  src: local("Times New Roman");
+  unicode-range: U+26;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty = '@font-face  {
+	font-family: "Ampersand";
+	src: local("Times New Roman");
+	unicode-range: U+26;
+}
+'.
+	^pretty
+]
+
 { #category : #'sample methods' }
 GtCSSFileSamples >> writeOn: aStream [
 	aStream
