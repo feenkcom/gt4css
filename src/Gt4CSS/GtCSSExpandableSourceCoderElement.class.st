@@ -14,6 +14,11 @@ GtCSSExpandableSourceCoderElement >> defaultCollapsedElementStencil [
 ]
 
 { #category : #initialization }
+GtCSSExpandableSourceCoderElement >> defaultExpandedElementStencil [
+	^ GtCSSExpandedCoderElementStencil new
+]
+
+{ #category : #initialization }
 GtCSSExpandableSourceCoderElement >> initialize [
 	super initialize.
 	showPackageAndClass := false.
@@ -43,10 +48,8 @@ GtCSSExpandableSourceCoderElement >> newCollapsedElement [
 { #category : #'private - instance creation' }
 GtCSSExpandableSourceCoderElement >> newExpandedElement [
 	| anExpandedElement |
-	anExpandedElement := GtCSSSourceCoderExpandedContentElement new.
+	anExpandedElement := super newExpandedElement.
 	anExpandedElement lspModel: lspModel.
-	textualCoderViewModel
-		ifNotNil: [ :aCoder | self assignExpandedCoder: aCoder to: anExpandedElement ].
 	anExpandedElement showPackageAndClass: showPackageAndClass.
 	^ anExpandedElement
 ]
