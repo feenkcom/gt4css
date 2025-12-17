@@ -992,18 +992,141 @@ GtCSSFileSamples >> testPrettyPrinterOnCSSString [
 ]
 
 { #category : #examples }
-GtCSSFileSamples >> testPrettyPrinterOnCSSString2 [
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringImportant [
 	<gtExample>
-	| ast visitor |
-	ast := CSSParser parseWithErrors: '@media only screen and (max-width : 768px) {
-	.product-pricing .pricing {
-		border-top: 1px solid #dcdcdc;
-		border-left: none;
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: 'html {
+	scroll-behavior: auto !important;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty = 'html {
+	scroll-behavior: auto !important;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringMediaQueryContents [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '@media(min-width: 900px) {
+ 	.finder-choice-container .fragment-wrapper {
+		display: flex;
+		justify-content: space-between;
+	}
+	
+	.finder-card { 
+		width: 100%;
+	}
+	.finder-card .finder-abstract-description {
+		display: inline-block;
+		min-height: 170px;
 	}
 }'.
 	visitor := CSSPrettyPrinterVisitor new.
 	visitor accept: ast.
-	^visitor contents
+	pretty := visitor contents.
+	self assert: pretty
+				= '@media (min-width:900px) {
+	.finder-choice-container .fragment-wrapper {
+		display: flex;
+		justify-content: space-between;
+	}
+	.finder-card {
+		width: 100%;
+	}
+	.finder-card .finder-abstract-description {
+		display: inline-block;
+		min-height: 170px;
+	}
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringSimpleMediaQuery [
+	<gtExample>
+	| ast visitor cssString pretty |
+	cssString := '@media only screen and (max-width:768px) {
+	.product-pricing .pricing {
+		border-top: 1px solid #dcdcdc;
+		border-left: none;
+		}
+}'.
+	ast := CSSParser parseWithErrors: cssString.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+				= '@media only screen and (max-width:768px) {
+	.product-pricing .pricing {
+		border-top: 1px solid #dcdcdc;
+		border-left: none;
+	}
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringSquareBrackets [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: 'input[type=password] , .password-toggling input[type=text]{
+	margin-top: 4px;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty = 'input[type=password] , .password-toggling input[type=text] {
+	margin-top: 4px;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringStartingWithComment [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '/*
+    Common styling
+ */
+/* Font definition */
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+	text-decoration: unset;
+}
+a {
+	text-decoration: underline;
+	color: var(--link-text-color);
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+				= '/*
+    Common styling
+ */
+/* Font definition */
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+	text-decoration: unset;
+}
+a {
+	text-decoration: underline;
+	color: var(--link-text-color);
+}
+'.
+	^pretty
 ]
 
 { #category : #'sample methods' }
