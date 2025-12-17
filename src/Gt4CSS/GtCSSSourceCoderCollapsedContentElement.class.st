@@ -8,8 +8,3 @@ Class {
 GtCSSSourceCoderCollapsedContentElement >> showPackageAndClass: aBoolean [
 	header ifNotNil: [ header showPackageAndClass: aBoolean ]
 ]
-
-{ #category : #'as yet unclassified' }
-GtCSSSourceCoderCollapsedContentElement >> updateCollapsedTextLabel [
-	label asyncPromise promise: textualCoderViewModel collapsedTextPromise
-]

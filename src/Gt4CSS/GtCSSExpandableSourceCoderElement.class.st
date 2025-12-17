@@ -8,10 +8,15 @@ Class {
 	#category : #'Gt4CSS-UI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
+GtCSSExpandableSourceCoderElement >> defaultCollapsedElementStencil [
+	^ GtCSSCollapsedCoderElementStencil new
+]
+
+{ #category : #initialization }
 GtCSSExpandableSourceCoderElement >> initialize [
-	showPackageAndClass := false.
 	super initialize.
+	showPackageAndClass := false.
 ]
 
 { #category : #accessing }
@@ -28,10 +33,10 @@ GtCSSExpandableSourceCoderElement >> lspModel: anObject [
 { #category : #'private - instance creation' }
 GtCSSExpandableSourceCoderElement >> newCollapsedElement [
 	| aCollapsedElement |
-	aCollapsedElement := GtCSSSourceCoderCollapsedContentElement new.
-	textualCoderViewModel
-		ifNotNil: [ :aCoder | self assignCollapsedCoder: aCoder to: aCollapsedElement ].
+	aCollapsedElement := super newCollapsedElement.
+	
 	aCollapsedElement showPackageAndClass: showPackageAndClass.
+	
 	^ aCollapsedElement
 ]
 
