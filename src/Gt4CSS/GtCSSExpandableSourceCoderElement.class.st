@@ -8,10 +8,20 @@ Class {
 	#category : #'Gt4CSS-UI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
+GtCSSExpandableSourceCoderElement >> defaultCollapsedElementStencil [
+	^ GtCSSCollapsedCoderElementStencil new
+]
+
+{ #category : #initialization }
+GtCSSExpandableSourceCoderElement >> defaultExpandedElementStencil [
+	^ GtCSSExpandedCoderElementStencil new
+]
+
+{ #category : #initialization }
 GtCSSExpandableSourceCoderElement >> initialize [
-	showPackageAndClass := false.
 	super initialize.
+	showPackageAndClass := false.
 ]
 
 { #category : #accessing }
@@ -28,20 +38,18 @@ GtCSSExpandableSourceCoderElement >> lspModel: anObject [
 { #category : #'private - instance creation' }
 GtCSSExpandableSourceCoderElement >> newCollapsedElement [
 	| aCollapsedElement |
-	aCollapsedElement := GtCSSSourceCoderCollapsedContentElement new.
-	textualCoderViewModel
-		ifNotNil: [ :aCoder | self assignCollapsedCoder: aCoder to: aCollapsedElement ].
+	aCollapsedElement := super newCollapsedElement.
+	
 	aCollapsedElement showPackageAndClass: showPackageAndClass.
+	
 	^ aCollapsedElement
 ]
 
 { #category : #'private - instance creation' }
 GtCSSExpandableSourceCoderElement >> newExpandedElement [
 	| anExpandedElement |
-	anExpandedElement := GtCSSSourceCoderExpandedContentElement new.
+	anExpandedElement := super newExpandedElement.
 	anExpandedElement lspModel: lspModel.
-	textualCoderViewModel
-		ifNotNil: [ :aCoder | self assignExpandedCoder: aCoder to: anExpandedElement ].
 	anExpandedElement showPackageAndClass: showPackageAndClass.
 	^ anExpandedElement
 ]

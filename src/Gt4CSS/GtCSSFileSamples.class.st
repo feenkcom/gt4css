@@ -959,6 +959,72 @@ figcaption {
 ]
 
 { #category : #examples }
+GtCSSFileSamples >> prettyPrinterScripterOnCSSString [
+	<gtExample>
+	| method scripter |
+	method := self class >> #lepiter_common.
+	scripter := BlScripter new.
+	scripter substep: 'Show a coder'
+		do: 
+			[:aStep |
+			(aStep set)
+				label: 'Initialize Coder Model';
+				model: [GtCSSCoderModel new forMethod: method];
+				play.
+			(aStep set)
+				label: 'Initialize Coder UI';
+				element: [:aCoder | aCoder asElement];
+				onModel;
+				play].
+	scripter substep: 'Format Code'
+		do: 
+			[:aStep |
+			aStep shortcutStep: 
+					[:s |
+					s
+						label: 'Format coder';
+						combination: BlKeyCombination primaryShiftF;
+						// GtSourceCoderEditorId]].
+	^scripter
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> prettyPrinterScripterOnCSSStringWithError [
+	<gtExample>
+	| scripter |
+	scripter := self prettyPrinterScripterOnCSSString.
+	scripter substep: 'Check Formating on error'
+		do: 
+			[:aStep |
+			aStep doStep: 
+					[:s |
+					s
+						label: 'Insert error in text';
+						action: 
+								[:aSourceEditor |
+								aSourceEditor
+									currentSourceString: '.a {foo: "bar"} { {{{{{}****--- .invalidcss 		}	} }'];
+						onModel].
+			aStep doStep: 
+					[:s |
+					""
+					s
+						label: 'Format text';
+						action: [:aSourceEditor | aSourceEditor format];
+						onModel].
+			scripter assertStep: 
+					[:s |
+					s
+						// GtSourceCoderEditorId;
+						value: [:each | each text asString]
+							equals: '.a {
+	foo: "bar";
+}
+{ {{{{{}****--- .invalidcss 		}	} }']].
+	^scripter
+]
+
+{ #category : #examples }
 GtCSSFileSamples >> renameCSSSelector [
 	<gtExample>
 	| model refactoring newName oldName |
@@ -979,6 +1045,177 @@ GtCSSFileSamples >> renameCSSSelector [
 				assert: newSource
 				equals: (oldSource copyReplaceAll: oldName with: newName) ].
 	^ model
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSString [
+	<gtExample>
+	| ast visitor |
+	ast := CSSParser parseWithErrors: self lepiter_common.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	^visitor contents
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringImportant [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: 'html {
+	scroll-behavior: auto !important;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty = 'html {
+	scroll-behavior: auto !important;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringMediaQueryContents [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '@media(min-width: 900px) {
+ 	.finder-choice-container .fragment-wrapper {
+		display: flex;
+		justify-content: space-between;
+	}
+	
+	.finder-card { 
+		width: 100%;
+	}
+	.finder-card .finder-abstract-description {
+		display: inline-block;
+		min-height: 170px;
+	}
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+				= '@media (min-width:900px) {
+	.finder-choice-container .fragment-wrapper {
+		display: flex;
+		justify-content: space-between;
+	}
+	.finder-card {
+		width: 100%;
+	}
+	.finder-card .finder-abstract-description {
+		display: inline-block;
+		min-height: 170px;
+	}
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringSimpleMediaQuery [
+	<gtExample>
+	| ast visitor cssString pretty |
+	cssString := '@media only screen and (max-width:768px) {
+	.product-pricing .pricing {
+		border-top: 1px solid #dcdcdc;
+		border-left: none;
+		}
+}'.
+	ast := CSSParser parseWithErrors: cssString.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+				= '@media only screen and (max-width:768px) {
+	.product-pricing .pricing {
+		border-top: 1px solid #dcdcdc;
+		border-left: none;
+	}
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringSquareBrackets [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: 'input[type=password] , .password-toggling input[type=text]{
+	margin-top: 4px;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty = 'input[type=password] , .password-toggling input[type=text] {
+	margin-top: 4px;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringStartingWithComment [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '/*
+    Common styling
+ */
+/* Font definition */
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+	text-decoration: unset;
+}
+a {
+	text-decoration: underline;
+	color: var(--link-text-color);
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+				= '/*
+    Common styling
+ */
+/* Font definition */
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+	text-decoration: unset;
+}
+a {
+	text-decoration: underline;
+	color: var(--link-text-color);
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringUnicodeRange [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '@font-face {
+  font-family: "Ampersand";
+  src: local("Times New Roman");
+  unicode-range: U+26;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty = '@font-face  {
+	font-family: "Ampersand";
+	src: local("Times New Roman");
+	unicode-range: U+26;
+}
+'.
+	^pretty
 ]
 
 { #category : #'sample methods' }
