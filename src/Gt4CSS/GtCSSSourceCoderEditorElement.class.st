@@ -6,13 +6,26 @@ Class {
 
 { #category : #'as yet unclassified' }
 GtCSSSourceCoderEditorElement >> createHeaderContextMenu [
-	^(BrMenuItems new)
-		addItemLabel: 'References'
-			action: 
-				[:anElement :aButtonModel :anEvent |
-				anElement phlow
-					spawnObject: textualCoderViewModel coder selector gtReferences];
-		yourself
+	"wait for the addons to be computed"
+	<return: #BrMenuItems>
+	| aMenu aMenuItemsPromise |
+	aMenu := BrMenuItems new.
+	aMenu beGroupedElementType.
+	aMenuItemsPromise := self textualCoderViewModel addOns asyncThen: 
+					[:theAddOns |
+					"extra context menu items that depend on ast and view model state such as selection"
+					| theItems theContextMenuAstAddons theMenuItems |
+					theContextMenuAstAddons := self textualCoderViewModel
+								computeHeaderContextMenuAstAddOns.
+					theItems := theAddOns contextMenuActions
+								, theContextMenuAstAddons contextMenuActions.
+					theItems := theItems reject: [:e | e title isNil].
+					theMenuItems := theItems
+								collect: [:eachAction | eachAction asBrMenuItemForCoderElement: self]
+								thenReject: #isNil.
+					self enqueueTask: (BlTaskAction new action: [aMenu items: theMenuItems])].
+	self enqueueTask: (BlPromiseTask new promise: aMenuItemsPromise).
+	^aMenu
 ]
 
 { #category : #initialization }
