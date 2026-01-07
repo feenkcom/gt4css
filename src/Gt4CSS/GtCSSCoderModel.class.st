@@ -5,7 +5,7 @@ Class {
 		'methodBehavior',
 		'selector'
 	],
-	#category : 'Gt4CSS-Model'
+	#category : #'Gt4CSS-Model'
 }
 
 { #category : #addons }
@@ -261,6 +261,19 @@ GtCSSCoderModel >> explicitProviderClass: aClass [
 	self attributeNamed: #providerClass put: aClass 
 ]
 
+{ #category : #'instance creation' }
+GtCSSCoderModel >> forMethod: aCompiledMethod [
+	| source |
+	self
+		methodBehavior: (GtPharoCoderBehavior explicit: aCompiledMethod methodClass).
+	self selector: aCompiledMethod selector.
+	source := (aCompiledMethod methodClass isInstanceSide
+			ifTrue: [ aCompiledMethod methodClass new ]
+			ifFalse: [ aCompiledMethod methodClass instanceSide ])
+			perform: aCompiledMethod selector.
+	self sourceCode: (GtCoderExplicitStringSource new source: source)
+]
+
 { #category : #formatting }
 GtCSSCoderModel >> format [
 	self formatWithRequesterObject: nil
@@ -273,19 +286,6 @@ GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
 	visitor := CSSPrettyPrinterVisitor new.
 	visitor accept: ast.
 	self currentSourceString: visitor contents
-]
-
-{ #category : #'instance creation' }
-GtCSSCoderModel >> forMethod: aCompiledMethod [
-	| source |
-	self
-		methodBehavior: (GtPharoCoderBehavior explicit: aCompiledMethod methodClass).
-	self selector: aCompiledMethod selector.
-	source := (aCompiledMethod methodClass isInstanceSide
-			ifTrue: [ aCompiledMethod methodClass new ]
-			ifFalse: [ aCompiledMethod methodClass instanceSide ])
-			perform: aCompiledMethod selector.
-	self sourceCode: (GtCoderExplicitStringSource new source: source)
 ]
 
 { #category : #ui }

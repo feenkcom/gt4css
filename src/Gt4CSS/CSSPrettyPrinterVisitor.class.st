@@ -8,7 +8,7 @@ Class {
 		'indent',
 		'allComments'
 	],
-	#category : 'Gt4CSS-Model'
+	#category : #'Gt4CSS-Model'
 }
 
 { #category : #generated }
@@ -204,13 +204,13 @@ CSSPrettyPrinterVisitor >> visitStylesheet: aStylesheet [
 ]
 
 { #category : #generated }
-CSSPrettyPrinterVisitor >> visitUnicodeRange: anUnicodeRange [
-	stream nextPutAll: anUnicodeRange value value
+CSSPrettyPrinterVisitor >> visitURI: anURI [
+	stream nextPutAll: anURI value value
 ]
 
 { #category : #generated }
-CSSPrettyPrinterVisitor >> visitURI: anURI [
-	stream nextPutAll: anURI value value
+CSSPrettyPrinterVisitor >> visitUnicodeRange: anUnicodeRange [
+	stream nextPutAll: anUnicodeRange value value
 ]
 
 { #category : #generated }

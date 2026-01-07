@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSStringRenameSelectorController,
 	#superclass : #GtRenameLiteralItemController,
-	#category : 'Gt4CSS-Refactorings'
+	#category : #'Gt4CSS-Refactorings'
 }
 
 { #category : #accessing }

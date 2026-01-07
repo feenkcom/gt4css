@@ -3,7 +3,7 @@ Class {
 	#superclass : #GtSourceCoderViewModel,
 	#traits : 'TGtPhlowWithSelfObjectHolder + TGtCoderViewModelWithParentProperties',
 	#classTraits : 'TGtPhlowWithSelfObjectHolder classTrait + TGtCoderViewModelWithParentProperties classTrait',
-	#category : 'Gt4CSS-Model'
+	#category : #'Gt4CSS-Model'
 }
 
 { #category : #'api - actions' }

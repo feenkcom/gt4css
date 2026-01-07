@@ -1,7 +1,7 @@
 Class {
 	#name : #AsyncCSSStringBehaviorMethodsString,
 	#superclass : #AsyncBehaviorStream,
-	#category : 'Gt4CSS-Filter'
+	#category : #'Gt4CSS-Filter'
 }
 
 { #category : #initialization }

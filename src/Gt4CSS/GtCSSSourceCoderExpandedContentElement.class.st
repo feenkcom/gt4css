@@ -5,7 +5,7 @@ Class {
 		'lspModel',
 		'label'
 	],
-	#category : 'Gt4CSS-UI'
+	#category : #'Gt4CSS-UI'
 }
 
 { #category : #updating }
