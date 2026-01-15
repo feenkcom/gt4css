@@ -1,17 +1,12 @@
 Class {
 	#name : #GtCSSCoderModel,
-	#superclass : #GtSourceCoder,
+	#superclass : #GtPharoSourceCoder,
 	#instVars : [
 		'methodBehavior',
 		'selector'
 	],
 	#category : #'Gt4CSS-Model'
 }
-
-{ #category : #addons }
-GtCSSCoderModel class >> contextHeaderMenuAddOnsPragma [
-	^#gtCoderHeaderContextMenuAddOns
-]
 
 { #category : #'instance creation' }
 GtCSSCoderModel class >> forMethod: aCompiledMethod [
@@ -121,52 +116,19 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 								ifNotNil: [ :anAction | anAction priority: 10.5 ] ] ] ]
 ]
 
-{ #category : #'add-ons' }
-GtCSSCoderModel >> addFormatMethodAst: anAst to: coderAddOns [
+{ #category : #adding }
+GtCSSCoderModel >> addEvaluateAddonsTo: anAst to: coderAddOns [
 	<gtCoderContextMenuAddOns>
-	(self
-		addContextMenuItemFrom: GtSourceCoderFormatShortcut new
-		group: BrMenuItemGroupConfiguration refactoring
-		withId: nil
-		to: coderAddOns) ifNotNil: [:anAction | anAction priority: 250]
 ]
 
 { #category : #'add-ons - header' }
-GtCSSCoderModel >> addHeaderFormatMethodSelector: aSelector ast: anAst to: coderAddOns [
+GtCSSCoderModel >> addHeaderFormatMethodSelector: aSelector to: coderAddOns [
 	<gtCoderHeaderContextMenuAddOns>
 	(self
 		addContextMenuItemFrom: GtSourceCoderFormatShortcut new
 		group: BrMenuItemGroupConfiguration refactoring
 		withId: nil
 		to: coderAddOns) ifNotNil: [:anAction | anAction priority: 250]
-]
-
-{ #category : #'add-ons - header' }
-GtCSSCoderModel >> addImplementorsHeaderContextMenuAddOnsSelector: aSelector ast: anAst to: coderAddOns [
-	<gtCoderHeaderContextMenuAddOns>
-	^coderAddOns
-		addContextMenuItem: GtSourceCoderBrowseImplementorsShortcut new name
-		group: BrMenuItemGroupConfiguration navigation
-		action: 
-			[:aCoderViewModel :anEditorElement |
-			anEditorElement phlow
-				spawnObject: aCoderViewModel coder selector gtImplementors]
-		id: nil
-		shortcutKey: nil
-]
-
-{ #category : #'add-ons - header' }
-GtCSSCoderModel >> addReferencesHeaderContextMenuAddOnsSelector: aSelector ast: anAst to: coderAddOns [
-	<gtCoderHeaderContextMenuAddOns>
-	^coderAddOns
-		addContextMenuItem: GtSourceCoderBrowseReferencesShortcut new name
-		group: BrMenuItemGroupConfiguration navigation
-		action: 
-			[:aCoderViewModel :anEditorElement |
-			anEditorElement phlow
-				spawnObject: aCoderViewModel coder selector gtReferences]
-		id: nil
-		shortcutKey: nil
 ]
 
 { #category : #converting }
@@ -181,12 +143,12 @@ GtCSSCoderModel >> behavior [
 	^ self methodBehavior behavior
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSCoderModel >> behavior: aBehavior [
 	self methodBehavior: (GtPharoCoderBehavior explicit: aBehavior)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GtCSSCoderModel >> canCompileMethodIn: newClass [
 	| ast modelClass pools variables model |
 	ast := self rbAST.
@@ -205,7 +167,7 @@ GtCSSCoderModel >> canCompileMethodIn: newClass [
 				or: [ pools anySatisfy: [ :pool | pool includesKey: each asSymbol ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GtCSSCoderModel >> canMoveMethodToInstanceOrClass [
 	| oldClass newClass |
 	oldClass := self behavior.
@@ -217,7 +179,7 @@ GtCSSCoderModel >> canMoveMethodToInstanceOrClass [
 	^ self canCompileMethodIn: newClass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - text' }
 GtCSSCoderModel >> collapsedText [
 	^selector asRopedText
 ]
@@ -232,12 +194,12 @@ GtCSSCoderModel >> computeAst: aString [
 	^ CSSParser parseWithErrors: aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSCoderModel >> currentSelector [
 	^ self currentSelectorPromise wait
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSCoderModel >> currentSelectorPromise [
 	selector
 		ifNotNil: [ ^ selector asAsyncPromise ].
@@ -256,7 +218,7 @@ GtCSSCoderModel >> example [
 	^nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - actions examples' }
 GtCSSCoderModel >> explicitProviderClass: aClass [
 	self attributeNamed: #providerClass put: aClass 
 ]
@@ -272,11 +234,6 @@ GtCSSCoderModel >> forMethod: aCompiledMethod [
 			ifFalse: [ aCompiledMethod methodClass instanceSide ])
 			perform: aCompiledMethod selector.
 	self sourceCode: (GtCoderExplicitStringSource new source: source)
-]
-
-{ #category : #formatting }
-GtCSSCoderModel >> format [
-	self formatWithRequesterObject: nil
 ]
 
 { #category : #formatting }
@@ -335,8 +292,6 @@ GtCSSCoderModel >> highlighterFor: anAST into: coderAddOns [
 
 { #category : #initialization }
 GtCSSCoderModel >> initializeAddOns: addOns [
-	super initializeAddOns: addOns.
-
 	addOns
 		addStyler: (GtCoderAstSmaCCParserStyler new smaccStyler: CSSParser gtStyler)
 ]
@@ -393,7 +348,7 @@ GtCSSCoderModel >> isMeta [
 	^ self behavior isMeta
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GtCSSCoderModel >> isNewMethod [
 	^ self currentSourceString isEmpty
 ]
@@ -436,7 +391,7 @@ GtCSSCoderModel >> modifiedMessageAstFor: anAST into: coderAddOns [
 		id: GtMethodCoderDiscardChangesActionId
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - refactorings' }
 GtCSSCoderModel >> moveMethodToInstanceOrClass [
 	| oldClass newClass model modelClass oldModelClass |
 	oldClass := self behavior.
@@ -457,7 +412,7 @@ GtCSSCoderModel >> moveMethodToInstanceOrClass [
 	[ model changes execute ] ifCurtailed: [ self behavior: oldClass ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - ast rb' }
 GtCSSCoderModel >> newRbAST: source [
 	| ast |
 	self isModified
@@ -497,21 +452,6 @@ GtCSSCoderModel >> package [
 	^ self compiledMethod package
 ]
 
-{ #category : #'as yet unclassified' }
-GtCSSCoderModel >> parse: aString asExpression: isExpression requestor: aRequestor [
-	^ (self behavior ifNil: [ UndefinedObject ]) compiler
-		source: aString;
-		isScripting: isExpression;
-		options: #(+ optionParseErrors + optionSkipSemanticWarnings);
-		requestor: aRequestor;
-		parse
-]
-
-{ #category : #'as yet unclassified' }
-GtCSSCoderModel >> parseMethod: aString [
-	^ self parse: aString asExpression: false requestor: nil
-]
-
 { #category : #'private - actions' }
 GtCSSCoderModel >> primitiveDebug: aSourceString inContext: aGtSourceCoderEvaluationContext onFailDo: anEvaluationFailBlock [
 	"Nothing to evaluate"
@@ -520,6 +460,8 @@ GtCSSCoderModel >> primitiveDebug: aSourceString inContext: aGtSourceCoderEvalua
 { #category : #'private - actions' }
 GtCSSCoderModel >> primitiveEvaluate: aSourceString inContext: aGtSourceCoderEvaluationContext onFailDo: anEvaluationFailBlock [
 	"Nothing to evaluate"
+
+	^ nil
 ]
 
 { #category : #accessing }
@@ -527,7 +469,7 @@ GtCSSCoderModel >> protocol [
 	^ (self methodBehavior behavior methodNamed: self selector) protocol
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtCSSCoderModel >> protocol: aSymbol [
 	(self methodBehavior behavior methodNamed: self selector) protocol: aSymbol.
 	self
@@ -542,7 +484,7 @@ GtCSSCoderModel >> protocolName [
 	^ (self methodBehavior behavior methodNamed: self selector) protocolName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - ast rb' }
 GtCSSCoderModel >> rbAST [
 	| source |
 
@@ -561,7 +503,7 @@ GtCSSCoderModel >> remove [
 		realBehaviorDo: [ :aBehavior | GtPharoCodeModifier current removeMethodFrom: aBehavior selector: self selector ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - refactorings' }
 GtCSSCoderModel >> renameProtocol: aString [ 
 	| change |
 	self protocol: aString asSymbol.
@@ -608,7 +550,7 @@ GtCSSCoderModel >> subscribeToSystem [
 		to: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GtCSSCoderModel >> testCase [
 	^nil
 ]

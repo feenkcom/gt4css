@@ -96,5 +96,5 @@ GtCSSSourceCoderExpandedContentElement >> updateAptitude: editor [
 GtCSSSourceCoderExpandedContentElement >> updateHeaderLabel: editor [
 	label text: textualCoderViewModel coder selector asRopedText.
 	label addAptitude: (BrGlamorousWithExplicitContextMenuAptitude
-				menu: [editor createHeaderContextMenu])
+				menu: [self createHeaderContextMenu])
 ]
