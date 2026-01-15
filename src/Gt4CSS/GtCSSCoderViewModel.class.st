@@ -34,7 +34,43 @@ GtCSSCoderViewModel >> compiledMethod [
 	^self coderModel compiledMethod
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - addons' }
+GtCSSCoderViewModel >> computeHeaderContextMenuAstAddOns [
+	<return: #GtCoderAddOns>
+	| aCoderModel newAddOns pragmas theAst |
+	aCoderModel := self coderModel.
+	theAst := aCoderModel astSync.
+	pragmas := aCoderModel
+				pragmasNamed: aCoderModel class contextHeaderMenuAddOnsPragma
+				inHierarchy: aCoderModel class.
+	newAddOns := aCoderModel newAddOns.
+	theAst
+		ifNotNil: 
+			[pragmas do: 
+					[:eachPragma |
+					
+					[aCoderModel perform: eachPragma methodSelector
+						withEnoughArguments: 
+							{aCoderModel selector.
+							theAst.
+							newAddOns.
+							self}]
+							on: Error
+							do: 
+								[:anError |
+								"emit as a beacon signal"
+								anError emit.
+								(NonInteractiveTranscript stderr)
+									nextPut: $[;
+									print: eachPragma method printString;
+									nextPut: $];
+									space;
+									print: anError;
+									cr]]].
+	^newAddOns
+]
+
+{ #category : #'api - accessing' }
 GtCSSCoderViewModel >> currentSelectorPromise [
 	^ self coderModel currentSelectorPromise
 ]
@@ -54,7 +90,7 @@ GtCSSCoderViewModel >> highlighter: aStyler [
 	self coder highlighter: aStyler
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GtCSSCoderViewModel >> isMeta [
 	"Return true if the method is implemented in a pharo metaclass (~ class side)"
 

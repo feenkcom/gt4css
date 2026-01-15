@@ -84,15 +84,17 @@ GtCSSSourceCoderExpandedContentElement >> updateAptitude: editor [
 	| aptitude |
 	aptitude := GtLSPEditorAptitude new.
 	aptitude lspFile: self lspFile.
-	textualCoderViewModel ifNotNil: [
-		aptitude styler: textualCoderViewModel compositeStyler ].
+	textualCoderViewModel
+		ifNotNil: [aptitude styler: textualCoderViewModel compositeStyler].
 	editor aptitude: aptitude.
-	textualCoderViewModel ifNotNil: [self updateHeaderLabel].
-	editor
-		addAptitude: (BrGlamorousWithExplicitContextMenuAptitude menu: [ editor createContextMenu ])
+	textualCoderViewModel ifNotNil: [self updateHeaderLabel: editor].
+	editor addAptitude: (BrGlamorousWithExplicitContextMenuAptitude
+				menu: [editor createContextMenu])
 ]
 
 { #category : #updating }
-GtCSSSourceCoderExpandedContentElement >> updateHeaderLabel [
+GtCSSSourceCoderExpandedContentElement >> updateHeaderLabel: editor [
 	label text: textualCoderViewModel coder selector asRopedText.
+	label addAptitude: (BrGlamorousWithExplicitContextMenuAptitude
+				menu: [editor createHeaderContextMenu])
 ]

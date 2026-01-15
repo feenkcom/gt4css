@@ -8,6 +8,11 @@ Class {
 	#category : #'Gt4CSS-Model'
 }
 
+{ #category : #addons }
+GtCSSCoderModel class >> contextHeaderMenuAddOnsPragma [
+	^#gtCoderHeaderContextMenuAddOns
+]
+
 { #category : #'instance creation' }
 GtCSSCoderModel class >> forMethod: aCompiledMethod [
 	^ self new forMethod: aCompiledMethod
@@ -114,6 +119,54 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 										position: each startPosition) executeIn: element ]
 								id: #'context-menu--css-split-ruleset')
 								ifNotNil: [ :anAction | anAction priority: 10.5 ] ] ] ]
+]
+
+{ #category : #'add-ons' }
+GtCSSCoderModel >> addFormatMethodAst: anAst to: coderAddOns [
+	<gtCoderContextMenuAddOns>
+	(self
+		addContextMenuItemFrom: GtSourceCoderFormatShortcut new
+		group: BrMenuItemGroupConfiguration refactoring
+		withId: nil
+		to: coderAddOns) ifNotNil: [:anAction | anAction priority: 250]
+]
+
+{ #category : #'add-ons - header' }
+GtCSSCoderModel >> addHeaderFormatMethodSelector: aSelector ast: anAst to: coderAddOns [
+	<gtCoderHeaderContextMenuAddOns>
+	(self
+		addContextMenuItemFrom: GtSourceCoderFormatShortcut new
+		group: BrMenuItemGroupConfiguration refactoring
+		withId: nil
+		to: coderAddOns) ifNotNil: [:anAction | anAction priority: 250]
+]
+
+{ #category : #'add-ons - header' }
+GtCSSCoderModel >> addImplementorsHeaderContextMenuAddOnsSelector: aSelector ast: anAst to: coderAddOns [
+	<gtCoderHeaderContextMenuAddOns>
+	^coderAddOns
+		addContextMenuItem: GtSourceCoderBrowseImplementorsShortcut new name
+		group: BrMenuItemGroupConfiguration navigation
+		action: 
+			[:aCoderViewModel :anEditorElement |
+			anEditorElement phlow
+				spawnObject: aCoderViewModel coder selector gtImplementors]
+		id: nil
+		shortcutKey: nil
+]
+
+{ #category : #'add-ons - header' }
+GtCSSCoderModel >> addReferencesHeaderContextMenuAddOnsSelector: aSelector ast: anAst to: coderAddOns [
+	<gtCoderHeaderContextMenuAddOns>
+	^coderAddOns
+		addContextMenuItem: GtSourceCoderBrowseReferencesShortcut new name
+		group: BrMenuItemGroupConfiguration navigation
+		action: 
+			[:aCoderViewModel :anEditorElement |
+			anEditorElement phlow
+				spawnObject: aCoderViewModel coder selector gtReferences]
+		id: nil
+		shortcutKey: nil
 ]
 
 { #category : #converting }
