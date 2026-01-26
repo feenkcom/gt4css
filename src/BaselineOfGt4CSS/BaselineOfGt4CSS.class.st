@@ -13,7 +13,7 @@ BaselineOfGt4CSS >> baseline: spec [
 				spec repository: 'github://feenkcom/gt4lsp:v0.7.43/src' ].
 		spec
 			baseline: 'GToolkitCoder' with: [
-				spec repository: 'github://feenkcom/gtoolkit-coder:v0.9.52/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-coder:v0.9.53/src' ].
 
 		spec package: 'Gt4CSS'.
 	]
