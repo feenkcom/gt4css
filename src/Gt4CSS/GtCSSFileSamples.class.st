@@ -1059,7 +1059,7 @@ GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithLetters [
 	visitor accept: ast.
 	pretty := visitor contents.
 	self
-		assert: pretty equals: '.square-icon i:not(button i , a i) {
+		assert: pretty equals: '.square-icon i:not(button i, a i) {
 	padding-right: 0;
 }
 '.
@@ -1099,6 +1099,48 @@ GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithNumbers2 [
 	self
 		assert: pretty equals: '.a {
 	box-shadow: rgb(100 100 111 / 18%) 0px 7px 20px 6px;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaComplexArguments [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.a :not(:is(.foo, :invalid-pseudo-class)) {
+	box-shadow: 0px 7px 20px 6px;
+}
+'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.a :not(:is(.foo, :invalid-pseudo-class)) {
+	box-shadow: 0px 7px 20px 6px;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaComplexArguments2 [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.row.simple:has(> .col > .grid-label-value)
++ .row.simple:has(> .col > .grid-label-value)
+.grid-label-value > div > .row.first > .key {
+	border-top-left-radius: 0;
+}
+'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.row.simple:has(> .col > .grid-label-value) + .row.simple:has(> .col > .grid-label-value) .grid-label-value > div > .row.first > .key {
+	border-top-left-radius: 0;
 }
 '.
 	^pretty

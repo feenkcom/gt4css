@@ -129,8 +129,15 @@ CSSPrettyPrinterVisitor >> visitDimension: aDimension [
 
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitFunction: aFunction [
+	| items |
 	stream nextPutAll: aFunction name value.
-	aFunction items do: [:e | self accept: e] separatedBy: [stream space].
+	items := aFunction items.
+	items doWithIndex: 
+			[:e :i |
+			i > 1
+				ifTrue: 
+					[(items at: i - 1) stopPosition + 1 = e startPosition ifFalse: [stream space]].
+			self accept: e].
 	stream nextPutAll: ')'
 ]
 
