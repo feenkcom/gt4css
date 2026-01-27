@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'environment'
 	],
-	#category : #'Gt4CSS-Examples'
+	#category : 'Gt4CSS-Examples'
 }
 
 { #category : #'as yet unclassified' }

@@ -5,7 +5,7 @@ Class {
 		'methodBehavior',
 		'selector'
 	],
-	#category : #'Gt4CSS-Model'
+	#category : 'Gt4CSS-Model'
 }
 
 { #category : #'instance creation' }
@@ -223,6 +223,15 @@ GtCSSCoderModel >> explicitProviderClass: aClass [
 	self attributeNamed: #providerClass put: aClass 
 ]
 
+{ #category : #formatting }
+GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
+	| ast visitor |
+	ast := self astSync.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	self currentSourceString: visitor contents
+]
+
 { #category : #'instance creation' }
 GtCSSCoderModel >> forMethod: aCompiledMethod [
 	| source |
@@ -234,15 +243,6 @@ GtCSSCoderModel >> forMethod: aCompiledMethod [
 			ifFalse: [ aCompiledMethod methodClass instanceSide ])
 			perform: aCompiledMethod selector.
 	self sourceCode: (GtCoderExplicitStringSource new source: source)
-]
-
-{ #category : #formatting }
-GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
-	| ast visitor |
-	ast := self astSync.
-	visitor := CSSPrettyPrinterVisitor new.
-	visitor accept: ast.
-	self currentSourceString: visitor contents
 ]
 
 { #category : #ui }

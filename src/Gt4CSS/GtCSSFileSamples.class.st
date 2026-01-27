@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSFileSamples,
 	#superclass : #Object,
-	#category : #'Gt4CSS-Examples'
+	#category : 'Gt4CSS-Examples'
 }
 
 { #category : #'css strings' }
@@ -1045,6 +1045,63 @@ GtCSSFileSamples >> renameCSSSelector [
 				assert: newSource
 				equals: (oldSource copyReplaceAll: oldName with: newName) ].
 	^ model
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithLetters [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.square-icon i:not(button i, a i) {
+	padding-right: 0;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.square-icon i:not(button i , a i) {
+	padding-right: 0;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithNumbers [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.policy-grid {
+  flex: 1 1 calc(50% - 10px);
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+		equals: '.policy-grid {
+	flex: 1 1 calc(50% - 10px);
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithNumbers2 [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.a {
+	box-shadow: rgb(100 100 111 / 18%) 0px 7px 20px 6px;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.a {
+	box-shadow: rgb(100 100 111 / 18%) 0px 7px 20px 6px;
+}
+'.
+	^pretty
 ]
 
 { #category : #examples }
