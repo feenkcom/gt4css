@@ -128,16 +128,20 @@ CSSPrettyPrinterVisitor >> visitDimension: aDimension [
 ]
 
 { #category : #generated }
-CSSPrettyPrinterVisitor >> visitFunction: aFunction [
-	| items |
-	stream nextPutAll: aFunction name value.
-	items := aFunction items.
+CSSPrettyPrinterVisitor >> visitExpressionItems: items [
 	items doWithIndex: 
 			[:e :i |
 			i > 1
 				ifTrue: 
-					[(items at: i - 1) stopPosition + 1 = e startPosition ifFalse: [stream space]].
-			self accept: e].
+					[(items at: i - 1) stopPosition + 1 = e startPosition
+						ifFalse: [stream space]].
+			self accept: e]
+]
+
+{ #category : #'as yet unclassified' }
+CSSPrettyPrinterVisitor >> visitFunction: aFunction [
+	stream nextPutAll: aFunction name value.
+	self visitExpressionItems: aFunction items.
 	stream nextPutAll: ')'
 ]
 
@@ -159,7 +163,7 @@ CSSPrettyPrinterVisitor >> visitOperator: anOperator [
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitParenthesizedExpression: aParenthesizedExpression [
 	stream nextPutAll: '('.
-	self accept: aParenthesizedExpression items.
+	self visitExpressionItems: aParenthesizedExpression items.
 	stream nextPutAll: ')'
 ]
 
@@ -170,15 +174,8 @@ CSSPrettyPrinterVisitor >> visitPercentage: aPercentage [
 
 { #category : #generated }
 CSSPrettyPrinterVisitor >> visitRuleset: aRuleset [
-	| col |
 	indent := indent + 1.
-	col := aRuleset selectorParts.
-	col doWithIndex: 
-			[:e :i |
-			i > 1
-				ifTrue: 
-					[(col at: i - 1) stopPosition + 1 = e startPosition ifFalse: [stream space]].
-			self accept: e].
+	self visitExpressionItems: aRuleset selectorParts.
 	stream
 		nextPutAll: ' {';
 		cr.

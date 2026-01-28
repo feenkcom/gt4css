@@ -1147,6 +1147,26 @@ GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaComplexArguments2 [
 ]
 
 { #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaMoreComplexArguments [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.a {
+	min-width: calc((100% - -60px) / 7);
+}
+'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.a {
+	min-width: calc((100% - -60px) / 7);
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
 GtCSSFileSamples >> testPrettyPrinterOnCSSString [
 	<gtExample>
 	| ast visitor |
@@ -1198,7 +1218,7 @@ GtCSSFileSamples >> testPrettyPrinterOnCSSStringMediaQueryContents [
 	visitor accept: ast.
 	pretty := visitor contents.
 	self assert: pretty
-				= '@media (min-width:900px) {
+				equals: '@media (min-width: 900px) {
 	.finder-choice-container .fragment-wrapper {
 		display: flex;
 		justify-content: space-between;
