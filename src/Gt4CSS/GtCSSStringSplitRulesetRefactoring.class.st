@@ -5,7 +5,7 @@ Class {
 		'selector',
 		'position'
 	],
-	#category : #'Gt4CSS-Refactorings'
+	#category : 'Gt4CSS-Refactorings'
 }
 
 { #category : #'instance creation' }

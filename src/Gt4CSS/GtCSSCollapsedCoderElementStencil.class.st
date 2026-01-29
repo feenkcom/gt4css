@@ -7,7 +7,7 @@ Users can set their own stencil using {{gtMethod:GtCSSCollapsedCoderElementStenc
 Class {
 	#name : #GtCSSCollapsedCoderElementStencil,
 	#superclass : #GtCoderElementStencil,
-	#category : #'Gt4CSS-UI'
+	#category : 'Gt4CSS-UI'
 }
 
 { #category : #'api - instantiation' }
