@@ -1048,6 +1048,125 @@ GtCSSFileSamples >> renameCSSSelector [
 ]
 
 { #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithLetters [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.square-icon i:not(button i, a i) {
+	padding-right: 0;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.square-icon i:not(button i, a i) {
+	padding-right: 0;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithNumbers [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.policy-grid {
+  flex: 1 1 calc(50% - 10px);
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+		equals: '.policy-grid {
+	flex: 1 1 calc(50% - 10px);
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaArgumentsWithNumbers2 [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.a {
+	box-shadow: rgb(100 100 111 / 18%) 0px 7px 20px 6px;
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.a {
+	box-shadow: rgb(100 100 111 / 18%) 0px 7px 20px 6px;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaComplexArguments [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.a :not(:is(.foo, :invalid-pseudo-class)) {
+	box-shadow: 0px 7px 20px 6px;
+}
+'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.a :not(:is(.foo, :invalid-pseudo-class)) {
+	box-shadow: 0px 7px 20px 6px;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaComplexArguments2 [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.row.simple:has(> .col > .grid-label-value)
++ .row.simple:has(> .col > .grid-label-value)
+.grid-label-value > div > .row.first > .key {
+	border-top-left-radius: 0;
+}
+'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.row.simple:has(> .col > .grid-label-value) + .row.simple:has(> .col > .grid-label-value) .grid-label-value > div > .row.first > .key {
+	border-top-left-radius: 0;
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSFormulaMoreComplexArguments [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.a {
+	min-width: calc((100% - -60px) / 7);
+}
+'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self
+		assert: pretty equals: '.a {
+	min-width: calc((100% - -60px) / 7);
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
 GtCSSFileSamples >> testPrettyPrinterOnCSSString [
 	<gtExample>
 	| ast visitor |
@@ -1099,7 +1218,7 @@ GtCSSFileSamples >> testPrettyPrinterOnCSSStringMediaQueryContents [
 	visitor accept: ast.
 	pretty := visitor contents.
 	self assert: pretty
-				= '@media (min-width:900px) {
+				equals: '@media (min-width: 900px) {
 	.finder-choice-container .fragment-wrapper {
 		display: flex;
 		justify-content: space-between;
