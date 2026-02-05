@@ -182,9 +182,11 @@ CSSPrettyPrinterVisitor >> visitRuleset: aRuleset [
 	aRuleset items do: 
 			[:e |
 			self accept: e.
-			stream
-				nextPutAll: ';';
-				cr].
+			e isRulesetNode
+				ifFalse: 
+					[stream
+						nextPutAll: ';';
+						cr]].
 	stream
 		nextPutAll: '}';
 		cr.
