@@ -1196,6 +1196,29 @@ GtCSSFileSamples >> testPrettyPrinterOnCSSStringImportant [
 ]
 
 { #category : #examples }
+GtCSSFileSamples >> testPrettyPrinterOnCSSStringInnerClasses [
+	<gtExample>
+	| ast visitor pretty |
+	ast := CSSParser
+				parseWithErrors: '.banner-background-home, .banner-background-admin, .banner-background-assistance, .banner-background-claims, .banner-background-policies, .banner-background-product-hub, .banner-background-quotes {
+.h2, h2, .h4, h4, a {
+		color: #fff;
+}
+}'.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	pretty := visitor contents.
+	self assert: pretty
+		equals: '.banner-background-home, .banner-background-admin, .banner-background-assistance, .banner-background-claims, .banner-background-policies, .banner-background-product-hub, .banner-background-quotes {
+.h2, h2, .h4, h4, a {
+		color: #fff;
+}
+}
+'.
+	^pretty
+]
+
+{ #category : #examples }
 GtCSSFileSamples >> testPrettyPrinterOnCSSStringMediaQueryContents [
 	<gtExample>
 	| ast visitor pretty |
