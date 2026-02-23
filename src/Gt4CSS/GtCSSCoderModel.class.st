@@ -122,6 +122,17 @@ GtCSSCoderModel >> addEvaluateAddonsTo: anAst to: coderAddOns [
 ]
 
 { #category : #'add-ons - header' }
+GtCSSCoderModel >> addHeaderCopyMethodSelector: aSelector to: coderAddOns [
+	<gtCoderHeaderContextMenuAddOns>
+	(coderAddOns
+		addContextMenuItem: (self createLabel: 'Copy method name'
+				description: aSelector)
+		group: BrMenuItemGroupConfiguration editing
+		action: [:aCoderViewModel | self copyMethodNameToClipboard]
+		id: nil) ifNotNil: [:anAction | anAction priority: 250]
+]
+
+{ #category : #'add-ons - header' }
 GtCSSCoderModel >> addHeaderFormatMethodSelector: aSelector to: coderAddOns [
 	<gtCoderHeaderContextMenuAddOns>
 	(self
@@ -192,6 +203,12 @@ GtCSSCoderModel >> compiledMethod [
 { #category : #'api - ast' }
 GtCSSCoderModel >> computeAst: aString [
 	^ CSSParser parseWithErrors: aString
+]
+
+{ #category : #'as yet unclassified' }
+GtCSSCoderModel >> copyMethodNameToClipboard [
+	self compiledMethod
+		ifNotNil: [:aCompiledMethod | Clipboard clipboardText: aCompiledMethod printString]
 ]
 
 { #category : #accessing }
@@ -299,32 +316,39 @@ GtCSSCoderModel >> initializeAddOns: addOns [
 { #category : #initialization }
 GtCSSCoderModel >> initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewModel [
 	super initializeAddOns: addOns viewModel: aGtPharoMethodCoderViewModel.
-
 	addOns
 		addMainAction: 'Save' translated
 		icon: BrGlamorousVectorIcons accept
-		action: [ :aCoderUIModel :anElement | aCoderUIModel save ]
+		action: [:aCoderUIModel :anElement | aCoderUIModel save]
 		id: GtMethodCoderSaveActionId.
 	addOns
 		addDropDownWithPreviewAction: 'Remove' translated
 		icon: BrGlamorousVectorIcons bin
-		action: [ :aButtonElement :aButtonModel :anEvent | self remove ]
-		stencil: [ :element | 
-			GtPharoRemoveMethodPreviewStencil new
+		action: [:aButtonElement :aButtonModel :anEvent | self remove]
+		stencil: 
+			[:element |
+			(GtPharoRemoveMethodPreviewStencil new)
 				selectorToRemove: self selector;
 				isEmptyMethod: self isNewMethod;
 				anElement: element;
-				create ]
+				create]
 		id: GtMethodCoderRemoveActionId.
 	addOns
 		addMainAction: 'Inspect Method' translated
 		icon: BrGlamorousVectorIcons inspect
-		action: [ :aCoderUIModel :anElement | 
-			self
-				notifyObjectSpawn: (aCoderUIModel behavior >> aCoderUIModel selector) methodReference
-				requesterObject: aCoderUIModel ]
+		action: 
+			[:aCoderUIModel :anElement |
+			self notifyObjectSpawn: (aCoderUIModel behavior >> aCoderUIModel selector)
+						methodReference
+				requesterObject: aCoderUIModel]
 		id: GtMethodCoderInspectActionId.
-	self initializeSearchTextAddOns: addOns viewModel: aGtPharoMethodCoderViewModel
+	addOns
+		addMainAction: 'Copy method name' translated
+		icon: BrGlamorousVectorIcons clipboard
+		action: [:aCoderUIModel :anElement | self copyMethodNameToClipboard]
+		id: GtMethodCoderCopyActionId.
+	self initializeSearchTextAddOns: addOns
+		viewModel: aGtPharoMethodCoderViewModel
 ]
 
 { #category : #initialization }
