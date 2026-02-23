@@ -123,7 +123,6 @@ GtCSSCoderModel >> addEvaluateAddonsTo: anAst to: coderAddOns [
 
 { #category : #'add-ons - header' }
 GtCSSCoderModel >> addHeaderCopyMethodSelector: aSelector to: coderAddOns [
-	<sys_ext>
 	<gtCoderHeaderContextMenuAddOns>
 	(coderAddOns
 		addContextMenuItem: (self createLabel: 'Copy method name'
