@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSStringClassFilter,
 	#superclass : #GtSearchMethodsContainedInClassFilter,
-	#category : 'Gt4CSS-Filter'
+	#category : #'Gt4CSS-Filter'
 }
 
 { #category : #accessing }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'ast'
 	],
-	#category : 'Gt4CSS-Highlighter'
+	#category : #'Gt4CSS-Highlighter'
 }
 
 { #category : #'instance creation' }

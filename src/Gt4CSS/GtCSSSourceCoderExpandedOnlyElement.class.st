@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSSourceCoderExpandedOnlyElement,
 	#superclass : #GtPharoMethodCoderExpandedOnlyElement,
-	#category : 'Gt4CSS-UI'
+	#category : #'Gt4CSS-UI'
 }
 
 { #category : #initialization }

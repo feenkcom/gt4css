@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSSourceCoderEditorElement,
 	#superclass : #GtSourceCoderEditorElement,
-	#category : 'Gt4CSS-UI'
+	#category : #'Gt4CSS-UI'
 }
 
 { #category : #initialization }

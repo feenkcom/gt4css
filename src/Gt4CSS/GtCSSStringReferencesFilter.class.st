@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'string'
 	],
-	#category : 'Gt4CSS-Filter'
+	#category : #'Gt4CSS-Filter'
 }
 
 { #category : #'as yet unclassified' }

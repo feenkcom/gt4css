@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'name'
 	],
-	#category : 'Gt4CSS-Highlighter'
+	#category : #'Gt4CSS-Highlighter'
 }
 
 { #category : #accessing }

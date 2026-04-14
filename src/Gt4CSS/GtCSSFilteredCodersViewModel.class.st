@@ -1,7 +1,7 @@
 Class {
 	#name : #GtCSSFilteredCodersViewModel,
 	#superclass : #GtFilteredCodersViewModel,
-	#category : 'Gt4CSS-Model'
+	#category : #'Gt4CSS-Model'
 }
 
 { #category : #views }

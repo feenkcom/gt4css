@@ -8,7 +8,7 @@ Class {
 		'packageButton',
 		'classButton'
 	],
-	#category : 'Gt4CSS-UI'
+	#category : #'Gt4CSS-UI'
 }
 
 { #category : #accessing }

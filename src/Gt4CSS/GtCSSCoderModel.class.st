@@ -5,7 +5,7 @@ Class {
 		'methodBehavior',
 		'selector'
 	],
-	#category : 'Gt4CSS-Model'
+	#category : #'Gt4CSS-Model'
 }
 
 { #category : #'instance creation' }
@@ -22,7 +22,8 @@ GtCSSCoderModel class >> forMethod: aCompiledMethod in: behavior [
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns>
 	<gtCoderContextMenuAddOns: 10.1d0>
-	| allSelections allCursors node interval group |
+	| allSelections allCursors node interval group aDocumentId |
+	aDocumentId := aCoderViewModel documentId.
 	group := BrMenuItemGroupConfiguration new
 			name: 'CSS';
 			priority: 10.
@@ -34,7 +35,6 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 					ifTrue: [ allCursors first position to: allCursors first position ]
 					ifFalse: [ ^ self ] ].
 	node := anAst nodeForInterval: interval.
-
 	(node isKindOf: CSSDeclarationNode)
 		ifTrue: [ (node name startPosition <= interval first
 				and: [ node name stopPosition >= interval last ])
@@ -49,7 +49,6 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 						id: #'context-menu--css-property-reference')
 						ifNotNil: [ :anAction | anAction priority: 10.1 ] ].
 			^ self ].
-
 	((node isKindOf: CSSIdentifierNode)
 		and: [ (node parent isKindOf: CSSRulesetNode)
 				and: [ (node parent selectorParts identityIncludes: node)
@@ -91,9 +90,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				id: #'context-menu--css-string-reference')
 				ifNotNil: [ :anAction | anAction priority: 10.4 ].
 			^ self ].
-
 	(node isKindOf: CSSDelimiterNode) ifTrue: [ node := node parent ].
-
 	(node isKindOf: CSSRulesetNode)
 		ifTrue: [ node selectorParts
 				doWithIndex: [ :each :i | 
@@ -240,15 +237,6 @@ GtCSSCoderModel >> explicitProviderClass: aClass [
 	self attributeNamed: #providerClass put: aClass 
 ]
 
-{ #category : #formatting }
-GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
-	| ast visitor |
-	ast := self astSync.
-	visitor := CSSPrettyPrinterVisitor new.
-	visitor accept: ast.
-	self currentSourceString: visitor contents
-]
-
 { #category : #'instance creation' }
 GtCSSCoderModel >> forMethod: aCompiledMethod [
 	| source |
@@ -260,6 +248,15 @@ GtCSSCoderModel >> forMethod: aCompiledMethod [
 			ifFalse: [ aCompiledMethod methodClass instanceSide ])
 			perform: aCompiledMethod selector.
 	self sourceCode: (GtCoderExplicitStringSource new source: source)
+]
+
+{ #category : #formatting }
+GtCSSCoderModel >> formatWithRequesterObject: aGtCSSCoderViewModel [
+	| ast visitor |
+	ast := self astSync.
+	visitor := CSSPrettyPrinterVisitor new.
+	visitor accept: ast.
+	self currentSourceString: visitor contents
 ]
 
 { #category : #ui }
