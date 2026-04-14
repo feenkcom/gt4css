@@ -242,9 +242,10 @@ GtCSSFileSamples >> doRenameIn: scripter [
 				onSpaceRoot;
 				id: #'context-menu--css-rename-selector' ].
 	scripter check
-		id: GtSourceCoderEditorId;
 		exists;
-		onBreadthFirstChildOfClass: GtRenameEditor.
+		// GtSourceCoderEditorId;
+		onBreadthFirstChildOfClass: GtRenameEditor;
+		play.
 	(scripter type: newName) play.
 	scripter
 		clickStep: [ :s | 
