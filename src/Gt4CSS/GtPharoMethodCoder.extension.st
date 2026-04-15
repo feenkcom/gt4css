@@ -22,8 +22,8 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 				group: (BrMenuItemGroupConfiguration new
 						name: 'CSS';
 						priority: 100)
-				hover: (self highlightNodesBlock: nodes)
-				leave: self removeHighlightBlock
+				hover: (self highlightNodesBlock: nodes documentId: aDocumentId)
+				leave: self removeHighlightsBlock
 				action: [ :cvm :element | 
 					(GtCSSStringRenameSelectorController new
 						sourceCoderViewModel: cvm;
@@ -39,8 +39,8 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 						group: (BrMenuItemGroupConfiguration new
 								name: 'CSS';
 								priority: 100)
-						hover: (self highlightNodesBlock: nodes)
-						leave: self removeHighlightBlock
+						hover: (self highlightNodesBlock: nodes documentId: aDocumentId)
+						leave: self removeHighlightsBlock
 						action: [ :cvm :element | element phlow spawnObject: token gtCSSStringSelectorReferences ]
 						id: #'context-menu--css-style')
 						ifNotNil: [ :anAction | anAction priority: 300.1 + (idx / 100) ] ] ]
