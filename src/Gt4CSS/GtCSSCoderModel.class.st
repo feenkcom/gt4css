@@ -22,7 +22,8 @@ GtCSSCoderModel class >> forMethod: aCompiledMethod in: behavior [
 GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewModel [
 	<gtCoderContextMenuAddOns>
 	<gtCoderContextMenuAddOns: 10.1d0>
-	| allSelections allCursors node interval group |
+	| allSelections allCursors node interval group aDocumentId |
+	aDocumentId := aCoderViewModel documentId.
 	group := BrMenuItemGroupConfiguration new
 			name: 'CSS';
 			priority: 10.
@@ -34,7 +35,6 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 					ifTrue: [ allCursors first position to: allCursors first position ]
 					ifFalse: [ ^ self ] ].
 	node := anAst nodeForInterval: interval.
-
 	(node isKindOf: CSSDeclarationNode)
 		ifTrue: [ (node name startPosition <= interval first
 				and: [ node name stopPosition >= interval last ])
@@ -49,7 +49,6 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 						id: #'context-menu--css-property-reference')
 						ifNotNil: [ :anAction | anAction priority: 10.1 ] ].
 			^ self ].
-
 	((node isKindOf: CSSIdentifierNode)
 		and: [ (node parent isKindOf: CSSRulesetNode)
 				and: [ (node parent selectorParts identityIncludes: node)
@@ -91,9 +90,7 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				id: #'context-menu--css-string-reference')
 				ifNotNil: [ :anAction | anAction priority: 10.4 ].
 			^ self ].
-
 	(node isKindOf: CSSDelimiterNode) ifTrue: [ node := node parent ].
-
 	(node isKindOf: CSSRulesetNode)
 		ifTrue: [ node selectorParts
 				doWithIndex: [ :each :i | 
@@ -448,6 +445,15 @@ GtCSSCoderModel >> newRbAST: source [
 	^ ast
 ]
 
+{ #category : #'private - notifying' }
+GtCSSCoderModel >> notifyProtocolChanged: aSymbol [
+	self
+		announce: (GtCoderProtocolChanged new
+				newProtocol: aSymbol;
+				coder: self;
+				yourself)
+]
+
 { #category : #subscriptions }
 GtCSSCoderModel >> onMethodModified: aMethodModified [
 	| doesAffect |
@@ -469,6 +475,11 @@ GtCSSCoderModel >> onMethodModified: aMethodModified [
 		anySatisfy: [ :each | each selector = #cssString ]) ifFalse: [ ^ self ].
 
 	self forMethod: aMethodModified newMethod
+]
+
+{ #category : #subscriptions }
+GtCSSCoderModel >> onMethodRecatorized: anAnnouncement [
+	self notifyProtocolChanged: anAnnouncement newProtocol name
 ]
 
 { #category : #accessing }
@@ -496,11 +507,7 @@ GtCSSCoderModel >> protocol [
 { #category : #accessing }
 GtCSSCoderModel >> protocol: aSymbol [
 	(self methodBehavior behavior methodNamed: self selector) protocol: aSymbol.
-	self
-		announce: (GtCoderProtocolChanged new
-				newProtocol: aSymbol;
-				coder: self;
-				yourself)
+	self notifyProtocolChanged: aSymbol
 ]
 
 { #category : #accessing }
@@ -564,14 +571,17 @@ GtCSSCoderModel >> selector: anObject [
 	selector := anObject
 ]
 
-{ #category : #subscriptions }
+{ #category : #'private - notifying' }
 GtCSSCoderModel >> subscribeToSystem [
 	self unsubscribeFromSystem.
 
 	SystemAnnouncer uniqueInstance weak
-		when: MethodModified
-		send: #onMethodModified:
-		to: self
+		when: GtMethodModifiedDone
+			send: #onMethodModified:
+			to: self;
+		when: GtMethodRecategorizedDone
+			send: #onMethodRecatorized:
+			to: self
 ]
 
 { #category : #tests }
