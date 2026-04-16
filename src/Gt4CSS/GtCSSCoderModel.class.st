@@ -445,6 +445,15 @@ GtCSSCoderModel >> newRbAST: source [
 	^ ast
 ]
 
+{ #category : #'private - notifying' }
+GtCSSCoderModel >> notifyProtocolChanged: aSymbol [
+	self
+		announce: (GtCoderProtocolChanged new
+				newProtocol: aSymbol;
+				coder: self;
+				yourself)
+]
+
 { #category : #subscriptions }
 GtCSSCoderModel >> onMethodModified: aMethodModified [
 	| doesAffect |
@@ -466,6 +475,11 @@ GtCSSCoderModel >> onMethodModified: aMethodModified [
 		anySatisfy: [ :each | each selector = #cssString ]) ifFalse: [ ^ self ].
 
 	self forMethod: aMethodModified newMethod
+]
+
+{ #category : #subscriptions }
+GtCSSCoderModel >> onMethodRecatorized: anAnnouncement [
+	self notifyProtocolChanged: anAnnouncement newProtocol name
 ]
 
 { #category : #accessing }
@@ -493,11 +507,7 @@ GtCSSCoderModel >> protocol [
 { #category : #accessing }
 GtCSSCoderModel >> protocol: aSymbol [
 	(self methodBehavior behavior methodNamed: self selector) protocol: aSymbol.
-	self
-		announce: (GtCoderProtocolChanged new
-				newProtocol: aSymbol;
-				coder: self;
-				yourself)
+	self notifyProtocolChanged: aSymbol
 ]
 
 { #category : #accessing }
@@ -561,14 +571,17 @@ GtCSSCoderModel >> selector: anObject [
 	selector := anObject
 ]
 
-{ #category : #subscriptions }
+{ #category : #'private - notifying' }
 GtCSSCoderModel >> subscribeToSystem [
 	self unsubscribeFromSystem.
 
 	SystemAnnouncer uniqueInstance weak
 		when: GtMethodModifiedDone
-		send: #onMethodModified:
-		to: self
+			send: #onMethodModified:
+			to: self;
+		when: GtMethodRecategorizedDone
+			send: #onMethodRecatorized:
+			to: self
 ]
 
 { #category : #tests }
