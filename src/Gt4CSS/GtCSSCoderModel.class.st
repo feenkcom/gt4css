@@ -479,6 +479,8 @@ GtCSSCoderModel >> onMethodModified: aMethodModified [
 
 { #category : #subscriptions }
 GtCSSCoderModel >> onMethodRecatorized: anAnnouncement [
+	anAnnouncement methodRecategorized = self compiledMethod ifFalse: [ ^ self ].
+
 	self notifyProtocolChanged: anAnnouncement newProtocol name
 ]
 
