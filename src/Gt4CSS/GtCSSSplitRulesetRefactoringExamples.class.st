@@ -37,7 +37,7 @@ GtCSSSplitRulesetRefactoringExamples >> splitRuleset [
 			forClass: self class.
 	refactoring primitiveExecute.
 	self
-		assert: ((refactoring model classFor: self class) sourceCodeFor: #css)
+		assert: ((refactoring model classFor: self class) sourceCodeFor: #css) lines
 		equals: 'css
 	<cssString>
 	^ ''h1 
@@ -47,6 +47,6 @@ GtCSSSplitRulesetRefactoringExamples >> splitRuleset [
 h2 
 {
 	color: #aaa
-}'''.
+}''' lines.
 	^ refactoring model
 ]
