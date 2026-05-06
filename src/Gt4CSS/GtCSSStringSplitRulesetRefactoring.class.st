@@ -27,6 +27,12 @@ GtCSSStringSplitRulesetRefactoring class >> splitAt: anInteger inMethod: aSelect
 		yourself
 ]
 
+{ #category : #preconditions }
+GtCSSStringSplitRulesetRefactoring >> applicabilityPreconditions [
+	^ self
+		applicabilityPreconditionsFor: {RBCondition definesSelector: selector in: class}
+]
+
 { #category : #transforming }
 GtCSSStringSplitRulesetRefactoring >> basicTransform [
 	| rewriter method |
@@ -50,11 +56,6 @@ GtCSSStringSplitRulesetRefactoring >> methodClass: aClass [
 { #category : #initialization }
 GtCSSStringSplitRulesetRefactoring >> position: anObject [
 	position := anObject
-]
-
-{ #category : #preconditions }
-GtCSSStringSplitRulesetRefactoring >> preconditions [
-	^ RBCondition definesSelector: selector in: class
 ]
 
 { #category : #transforming }
