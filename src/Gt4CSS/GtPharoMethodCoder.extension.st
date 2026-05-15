@@ -45,3 +45,8 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 						id: #'context-menu--css-style')
 						ifNotNil: [ :anAction | anAction priority: 300.1 + (idx / 100) ] ] ]
 ]
+
+{ #category : #'*Gt4CSS' }
+GtPharoMethodCoder class >> forCSSMethod: aCompiledMethod [
+	^ GtCSSCoderModel forMethod: aCompiledMethod
+]
