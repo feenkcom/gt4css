@@ -168,11 +168,14 @@ GtCSSCoderModel >> canCompileMethodIn: newClass [
 				ifTrue: [ variables add: node name ] ].
 	model := RBNamespace new.
 	modelClass := model classFor: newClass.
-	pools := {Smalltalk} , modelClass instanceSide sharedPools.
-	^ variables
-		allSatisfy: [ :each | 
-			(modelClass definesVariable: each)
-				or: [ pools anySatisfy: [ :pool | pool includesKey: each asSymbol ] ] ]
+	pools := modelClass
+		ifNil: [ #() ]
+		ifNotNil: [ modelClass instanceSide sharedPools collect: #classVarNames ].
+	^ variables allSatisfy: [ :each | | eachSymbol |
+			eachSymbol := each asSymbol.
+			(modelClass ifNil: [ false ] ifNotNil: [ modelClass definesVariable: each ])
+			or: [ (Smalltalk includesKey: eachSymbol) 
+			or: [ pools anySatisfy: [ :pool | pool includes: eachSymbol ] ] ]]
 ]
 
 { #category : #testing }
