@@ -27,7 +27,8 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 				action: [ :cvm :element | 
 					(GtCSSStringRenameSelectorController new
 						sourceCoderViewModel: cvm;
-						originalNode: node) execute ]
+						originalNode: node;
+						documentId: aDocumentId) execute ]
 				id: #'context-menu--css-rename-selector')
 				ifNotNil: [ :anAction | anAction priority: 300.1 ].
 			(node literalValue splitOn: Character space)

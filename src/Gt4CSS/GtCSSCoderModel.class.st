@@ -66,7 +66,8 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				action: [ :cvm :element | 
 					(GtCSSStringRenameSelectorController new
 						sourceCoderViewModel: cvm;
-						originalNode: node) executeIn: element ]
+						originalNode: node;
+						documentId: aDocumentId) executeIn: element ]
 				id: #'context-menu--css-rename-selector')
 				ifNotNil: [ :anAction | anAction priority: 10.2 ].
 			(coderAddOns
@@ -107,8 +108,10 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 								hover: nil
 								leave: nil
 								action: [ :cvm :element | 
-									((GtCSSStringSplitRulesetRefactoringController new sourceCoderViewModel: cvm)
-										position: each startPosition) executeIn: element ]
+									(GtCSSStringSplitRulesetRefactoringController new
+										sourceCoderViewModel: cvm;
+										position: each startPosition;
+										documentId: aDocumentId) executeIn: element ]
 								id: #'context-menu--css-split-ruleset')
 								ifNotNil: [ :anAction | anAction priority: 10.5 ] ] ] ]
 ]
