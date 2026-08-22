@@ -42,6 +42,14 @@ GtCSSStringReferencesFilter >> resultType [
 	^ GtAsyncCSSStringTypedGroupStream
 ]
 
+{ #category : #storing }
+GtCSSStringReferencesFilter >> storeCreationCodeOn: aStream [
+	aStream
+		nextPutAll: self class name;
+		nextPutAll: ' new string: ';
+		print: self string.
+]
+
 { #category : #accessing }
 GtCSSStringReferencesFilter >> string [
 	^ string

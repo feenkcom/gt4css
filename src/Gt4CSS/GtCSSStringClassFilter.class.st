@@ -19,3 +19,11 @@ GtCSSStringClassFilter >> includesMethod: aCompiledMethod [
 GtCSSStringClassFilter >> resultType [
 	^ GtAsyncCSSStringTypedGroupStream
 ]
+
+{ #category : #storing }
+GtCSSStringClassFilter >> storeCreationCodeOn: aStream [
+	aStream
+		nextPutAll: self class name;
+		nextPutAll: ' forClass: ';
+		nextPutAll: self filterClass name.
+]
