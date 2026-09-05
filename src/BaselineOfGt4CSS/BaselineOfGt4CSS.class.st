@@ -10,10 +10,10 @@ BaselineOfGt4CSS >> baseline: spec [
 	spec for: #'common' do: [
 		spec
 			baseline: 'GToolkit4LSP' with: [
-				spec repository: 'github://feenkcom/gt4lsp:v0.7.208/src' ].
+				spec repository: 'github://feenkcom/gt4lsp:v0.7.209/src' ].
 		spec
 			baseline: 'GToolkitCoder' with: [
-				spec repository: 'github://feenkcom/gtoolkit-coder:v0.9.227/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-coder:v0.9.228/src' ].
 
 		spec package: 'Gt4CSS'.
 	]
