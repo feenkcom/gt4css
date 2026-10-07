@@ -377,6 +377,11 @@ GtCSSCoderModel >> isForMethod [
 ]
 
 { #category : #testing }
+GtCSSCoderModel >> isForSmalltalkCode [
+	^ false
+]
+
+{ #category : #testing }
 GtCSSCoderModel >> isMeta [
 	"Return true if the method is implemented in a pharo metaclass (~ class side)"
 
