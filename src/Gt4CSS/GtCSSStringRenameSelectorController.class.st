@@ -4,6 +4,13 @@ Class {
 	#category : #'Gt4CSS-Refactorings'
 }
 
+{ #category : #testing }
+GtCSSStringRenameSelectorController class >> isDeprecated [
+	"Replaced by {{gtClass:GtPharoRenameCSSSelectorCoderController}} for CSS coders and by {{gtClass:GtPharoRenameCSSClassCoderController}} for `style:` strings in Pharo methods, this implementation stays for clients that still depend on it."
+
+	^ true
+]
+
 { #category : #accessing }
 GtCSSStringRenameSelectorController >> installValidation [
 	renameAction forText
