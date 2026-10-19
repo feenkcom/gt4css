@@ -25,10 +25,10 @@ GtPharoMethodCoder >> addCSSStringAddOns: anAst to: coderAddOns from: aCoderView
 				hover: (self highlightNodesBlock: nodes documentId: aDocumentId)
 				leave: self removeHighlightsBlock
 				action: [ :cvm :element | 
-					(GtCSSStringRenameSelectorController new
-						sourceCoderViewModel: cvm;
-						originalNode: node;
-						documentId: aDocumentId) execute ]
+					self
+						renameCSSClassChoosingImplementation: node
+						in: cvm
+						for: element ]
 				id: #'context-menu--css-rename-selector')
 				ifNotNil: [ :anAction | anAction priority: 300.1 ].
 			(node literalValue splitOn: Character space)

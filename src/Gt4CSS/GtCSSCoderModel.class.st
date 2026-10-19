@@ -64,10 +64,11 @@ GtCSSCoderModel >> addContextMenuAddOns: anAst to: coderAddOns from: aCoderViewM
 				hover: nil
 				leave: nil
 				action: [ :cvm :element | 
-					(GtCSSStringRenameSelectorController new
-						sourceCoderViewModel: cvm;
-						originalNode: node;
-						documentId: aDocumentId) executeIn: element ]
+					self
+						renameCSSSelectorChoosingImplementation: node
+						in: cvm
+						documentId: aDocumentId
+						for: element ]
 				id: #'context-menu--css-rename-selector')
 				ifNotNil: [ :anAction | anAction priority: 10.2 ].
 			(coderAddOns
@@ -554,6 +555,23 @@ GtCSSCoderModel >> rbAST [
 GtCSSCoderModel >> remove [
 	self methodBehavior
 		realBehaviorDo: [ :aBehavior | GtPharoCodeModifier current removeMethodFrom: aBehavior selector: self selector ]
+]
+
+{ #category : #refactoring }
+GtCSSCoderModel >> renameCSSSelectorChoosingImplementation: aNode in: aSourceCoderViewModel documentId: aDocumentId for: anElement [
+	"Use the attribute based controller {{gtClass:GtPharoRenameCSSSelectorCoderController}} if the new rename implementation is enabled, otherwise the old one."
+
+	GtPharoCoderSettings displayNewRenameImplementationContextMenuItem
+		ifFalse: [ ^ (GtCSSStringRenameSelectorController new
+				sourceCoderViewModel: aSourceCoderViewModel;
+				originalNode: aNode;
+				documentId: aDocumentId) executeIn: anElement ].
+	GtPharoRenameCSSSelectorCoderController new
+		originalNode: aNode;
+		editorElement: anElement;
+		documentId: aDocumentId;
+		sourceCoderViewModel: aSourceCoderViewModel;
+		install
 ]
 
 { #category : #'api - refactorings' }
