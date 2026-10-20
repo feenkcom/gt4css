@@ -12,7 +12,7 @@ GtPharoRenameCSSClassCoderControllerExamples >> cssClassNode [
 	"The first string with the CSS class."
 
 	<gtExample>
-	<return: #GtPharoStringNode>
+	<return: #GtPharoStringLiteralNode>
 	self styledCoder astSync
 		allNodesDo: [ :each | 
 			(each isLiteral and: [ each isErrorNode not and: [ each literalValue = 'le-nav-link' ] ])
