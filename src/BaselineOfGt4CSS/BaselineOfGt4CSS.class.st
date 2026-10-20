@@ -15,7 +15,7 @@ BaselineOfGt4CSS >> baseline: spec [
 				baseline: 'GToolkit4Pharo'
 					with: [ spec repository: 'github://feenkcom/gt4pharo:main/src' ];
 				baseline: 'CSSParser' 
-					with: [ spec repository: 'github://j-brant/SmaCC' ];
+					with: [ spec repository: 'github://j-brant/SmaCC:/src' ];
 				package: 'Gt4CSS'
 					with: [ spec requires: #( GToolkit4LSP GToolkit4Pharo CSSParser ) ];
 				package: 'Gt4CSS-Examples-RustEditor' 
