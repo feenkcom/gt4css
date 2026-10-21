@@ -64,7 +64,8 @@ GtPharoRenameCSSClassCoderControllerExamples >> installedController_cancel [
 
 	self assert: aController sourceCoderViewModel sourceText asString equals: anOriginalSource.
 	self assert: aController attributeTags isNil.
-	self assert: aController editorElement userData isEmpty.
+	self assert: (aController editorElement userData includesKey: #variableController) not.
+	self assert: (aController editorElement userData includesKey: #variableModel) not.
 	^ aController
 ]
 
