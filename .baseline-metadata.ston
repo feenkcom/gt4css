@@ -1,6 +1,7 @@
 {
 	"repositories" : {
-		"github://feenkcom/gt4lsp/src" : "v0.7.228",
-		"github://feenkcom/gtoolkit-coder/src" : "v0.9.251"
+		"github://feenkcom/gt4lsp/src" : "v0.7.229",
+		"github://feenkcom/gt4pharo/src" : "v0.7.322",
+		"github://j-brant/SmaCC/src" : "cc9a2a478c8ca00a9cfe496279cb343049e865fc"
 	}
 }
