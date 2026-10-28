@@ -10,13 +10,13 @@ BaselineOfGt4CSS >> baseline: spec [
 	spec for: #'common' do: [
 		spec
 			baseline: 'GToolkit4LSP' with: [
-				spec repository: 'github://feenkcom/gt4lsp:v0.7.234/src' ].
+				spec repository: 'github://feenkcom/gt4lsp:v0.7.235/src' ].
 		spec
 			baseline: 'GToolkit4Pharo' with: [
-				spec repository: 'github://feenkcom/gt4pharo:v0.7.332/src' ].
+				spec repository: 'github://feenkcom/gt4pharo:v0.7.333/src' ].
 		spec
 			baseline: 'CSSParser' with: [
-				spec repository: 'github://j-brant/SmaCC:002450820e55dac98fb3164e856ecc69a2edd101/src' ].
+				spec repository: 'github://j-brant/SmaCC:9148af1163e7ac33fdeea05b300c6cbcf71d6fa5/src' ].
 
 		spec package: 'Gt4CSS' with: [
 			spec requires: #(#GToolkit4LSP #GToolkit4Pharo #CSSParser) ].
