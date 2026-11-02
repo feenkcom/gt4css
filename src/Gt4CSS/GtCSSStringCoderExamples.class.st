@@ -64,6 +64,51 @@ GtCSSStringCoderExamples >> changeProtocol [
 	^ scripter
 ]
 
+{ #category : #examples }
+GtCSSStringCoderExamples >> changeProtocolCanBeUndone [
+	"Changing the protocol of a method in the CSS coder records the change:
+	one undo restores the protocol and keeps the changes recorded before it"
+
+	<gtExample>
+	^ GtRefactoryChangeManager
+		isolatedInstanceDuring: [ :aChangeManager |
+			| scripter realClass previousProtocol |
+			[ scripter := self expandCSSItem.
+			realClass := environment anyDummyClass realClass.
+			previousProtocol := (realClass >> #background111) protocolName.
+			(RBAddMethodChange
+				compile: 'recordedBeforeChangingProtocol ^ 1'
+				in: realClass
+				classified: 'accessing') gtExecuteWithUndo.
+
+			scripter
+				clickStep: [ :s |
+					s
+						label: 'Click protocol button';
+						// GtCSSExpandableSourceCoderElement;
+						@ [ :each | each isExpanded ];
+						// GtPharoProtocolTagId ].
+			scripter
+				typeStep: [ :s |
+					s
+						label: 'Fill new protocol';
+						text: 'foo' ].
+			scripter
+				keyPressStep: [ :s |
+					s
+						label: 'Complete name';
+						key: BlKeyboardKey return ].
+			self assert: (realClass >> #background111) protocolName equals: 'foo'.
+
+			aChangeManager undoChange.
+			self assert: (realClass >> #background111) protocolName equals: previousProtocol.
+			self assert: (realClass includesSelector: #recordedBeforeChangingProtocol).
+			self assert: aChangeManager hasUndoableOperations.
+			scripter ]
+				ensure: [ self cleanUp.
+					environment := nil ] ]
+]
+
 { #category : #'as yet unclassified' }
 GtCSSStringCoderExamples >> changeToClassSideMethod [
 	<gtExample>
@@ -88,6 +133,49 @@ GtCSSStringCoderExamples >> changeToClassSideMethod [
 	self
 		assert: (environment anyDummyClass realClass class selectors includes: #background111).
 	^ scripter
+]
+
+{ #category : #examples }
+GtCSSStringCoderExamples >> changeToClassSideMethodCanBeUndone [
+	"Moving a method to the class side in the CSS coder records the change:
+	one undo moves it back and keeps the changes recorded before it"
+
+	<gtExample>
+	^ GtRefactoryChangeManager
+		isolatedInstanceDuring: [ :aChangeManager |
+			| scripter realClass |
+			[ scripter := self expandCSSItem.
+			realClass := environment anyDummyClass realClass.
+			(RBAddMethodChange
+				compile: 'recordedBeforeMoving ^ 1'
+				in: realClass
+				classified: 'accessing') gtExecuteWithUndo.
+
+			scripter
+				clickStep: [ :s |
+					s
+						label: 'Click side button';
+						// GtCSSExpandableSourceCoderElement;
+						@ [ :each | each isExpanded ];
+						// GtPharoSideTagId ].
+			scripter
+				clickStep: [ :s |
+					s
+						label: 'Click side button';
+						onSpaceRoot;
+						onDropdown: true;
+						onBrButtonName: 'class' ].
+			self assert: (realClass includesSelector: #background111) not.
+			self assert: (realClass class includesSelector: #background111).
+
+			aChangeManager undoChange.
+			self assert: (realClass includesSelector: #background111).
+			self assert: (realClass class includesSelector: #background111) not.
+			self assert: (realClass includesSelector: #recordedBeforeMoving).
+			self assert: aChangeManager hasUndoableOperations.
+			scripter ]
+				ensure: [ self cleanUp.
+					environment := nil ] ]
 ]
 
 { #category : #'as yet unclassified' }

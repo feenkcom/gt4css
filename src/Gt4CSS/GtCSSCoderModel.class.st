@@ -451,7 +451,7 @@ GtCSSCoderModel >> moveMethodToInstanceOrClass [
 	(oldModelClass directlyDefinesMethod: self currentSelector)
 		ifTrue: [ oldModelClass removeMethod: self currentSelector ].
 	self behavior: newClass.
-	[ model changes execute ] ifCurtailed: [ self behavior: oldClass ]
+	[ model changes gtExecuteWithUndo ] ifCurtailed: [ self behavior: oldClass ]
 ]
 
 { #category : #'private - ast rb' }
@@ -500,7 +500,9 @@ GtCSSCoderModel >> onMethodModified: aMethodModified [
 
 { #category : #subscriptions }
 GtCSSCoderModel >> onMethodRecatorized: anAnnouncement [
-	anAnnouncement methodRecategorized = self compiledMethod ifFalse: [ ^ self ].
+	anAnnouncement methodRecategorized = (self behavior 
+		compiledMethodAt: self selector ifAbsent: [ ^ self ])
+			ifFalse: [ ^ self ].
 
 	self notifyProtocolChanged: anAnnouncement newProtocol name
 ]
@@ -576,14 +578,17 @@ GtCSSCoderModel >> renameCSSSelectorChoosingImplementation: aNode in: aSourceCod
 
 { #category : #'api - refactorings' }
 GtCSSCoderModel >> renameProtocol: aString [ 
+	"Change the protocol only through the recorded change, so that it can be undone.
+	#protocol: would change the protocol of the method directly, before the change records it.
+	The coder is notified by the recategorization announcement (#onMethodRecatorized:)"
+
 	| change |
-	self protocol: aString asSymbol.
 	selector notNil
 		ifTrue: [ change := RBMethodProtocolChange
 				selector: selector
 				in: self behavior
-				classified: self protocolName.
-			change execute ]
+				classified: aString asSymbol.
+			change gtExecuteWithUndo ]
 ]
 
 { #category : #accessing }
