@@ -1,7 +1,7 @@
 {
 	"repositories" : {
-		"github://feenkcom/gt4lsp/src" : "v0.7.237",
-		"github://feenkcom/gt4pharo/src" : "v0.7.337",
-		"github://j-brant/SmaCC/src" : "da3f53a5ccd8cf78f213da4661f681065a88fa68"
+		"github://feenkcom/gt4lsp/src" : "v0.7.238",
+		"github://feenkcom/gt4pharo/src" : "v0.7.338",
+		"github://j-brant/SmaCC/src" : "32c77dcf280f907c54085217b072ade35076165e"
 	}
 }
