@@ -59,7 +59,7 @@ GtCSSStringCoderExamples >> changeProtocol [
 				key: BlKeyboardKey return ].
 	self 
 		assert: (environment anyDummyClass realClass >> #background111) protocolName 
-		equals: 'foo'.
+		equals: #foo.
 		
 	^ scripter
 ]
@@ -98,7 +98,7 @@ GtCSSStringCoderExamples >> changeProtocolCanBeUndone [
 					s
 						label: 'Complete name';
 						key: BlKeyboardKey return ].
-			self assert: (realClass >> #background111) protocolName equals: 'foo'.
+			self assert: (realClass >> #background111) protocolName equals: #foo.
 
 			aChangeManager undoChange.
 			self assert: (realClass >> #background111) protocolName equals: previousProtocol.

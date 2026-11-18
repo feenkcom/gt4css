@@ -2,7 +2,7 @@ Extension { #name : #Class }
 
 { #category : #'*Gt4CSS' }
 Class >> gtCSSScripts [
-	^ (Pragma allNamed: 'cssString')
+	^ (Pragma allNamed: #cssString)
 		select: [ :each | 
 			each method numArgs = 0
 				and: [ each method gtIsActive
