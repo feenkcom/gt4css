@@ -186,7 +186,7 @@ GtCSSStringCoderExamples >> check: scripter selector: aString exists: aBoolean [
 				label: 'Check for ' , aString;
 				// GtCSSExpandableSourceCoderElement;
 				// BlAttributedTextElement;
-				@ [ :each | each text asString = aString ].
+				@ [ :each | each text asString sameContentAs: aString ].
 			aBoolean ifTrue: [ s exists ] ifFalse: [ s notExists ] ].
 	^ scripter
 ]
