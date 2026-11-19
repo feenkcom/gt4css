@@ -114,7 +114,7 @@ GtCSSStringRenameSelectorRefactoring >> renameUsages [
 						| index |
 						index := node parent arguments identityIndexOf: node.
 						index > 0 
-							and: [(node parent selectorParts at: index) = ''style:'' ] ] }'
+							and: [(node parent selectorParts at: index) = #style: ] ] }'
 		with: newName printString.
 	self
 		potentialUsagesDo: [ :method | (rewriter executeTree: method ast) ifTrue: [ method compileTree: rewriter tree ] ]
